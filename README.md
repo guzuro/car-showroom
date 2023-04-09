@@ -21,6 +21,6 @@
  - [x] NaiveUI
 
 **Backend:**
- - [x] NestJS (w/ express by default)
+ - [x] NodeJS, Express
  - [x] Postgres, TypeORM
 
