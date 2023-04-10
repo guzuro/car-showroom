@@ -1,11 +1,16 @@
-import { IsNotEmpty, MinLength } from 'class-validator';
+import { body } from 'express-validator';
 
-export class LoginUserSchema {
-
-    @IsNotEmpty()
-    login!: string
-
-    @IsNotEmpty()
-    @MinLength(8)
-    password!: string
-}
+export const loginUserSchema = [
+    body('login')
+        .exists()
+        .withMessage('Login required')
+        .trim()
+        .escape(),
+    body('password')
+        .exists()
+        .withMessage('Password required')
+        .isLength({ min: 8 })
+        .withMessage('Password must be at least 8 chars long')
+        .exists()
+        .escape(),
+]
