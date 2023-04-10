@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { AppDataSource } from './config/data-source';
+import authRouter from './routes/auth.routes';
 
 dotenv.config();
 
@@ -14,6 +15,9 @@ AppDataSource.initialize()
 
 const app: Express = express();
 const port = process.env.PORT;
+
+app.use(express.json());
+app.use('/api/auth', authRouter);
 
 app.get('/', (req: Request, res: Response) => {
     res.send('hola');
