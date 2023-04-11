@@ -27,4 +27,10 @@ export class User {
 
     @UpdateDateColumn()
     updatedAt!: Date
+
+    omitPassword() {
+        const { password, ...fields } = this
+
+        return fields
+    }
 }

@@ -37,9 +37,9 @@ export const loginUserHandler = async (req: Request, res: Response, next: NextFu
 
             if (passwordIsOk) {
                 res.statusCode = 200;
-                delete user.password;
-
-                res.send(user)
+                res.send(
+                    user.omitPassword()
+                )
             } else {
                 next(new HttpException(401, 'Wrong password'))
             }
