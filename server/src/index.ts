@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { AppDataSource } from './config/data-source';
 import authRouter from './routes/auth.routes';
+import errorMiddleware from './middlewares/errorMiddleware';
 
 dotenv.config();
 
@@ -26,3 +27,5 @@ app.get('/', (req: Request, res: Response) => {
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
+
+app.use(errorMiddleware)
