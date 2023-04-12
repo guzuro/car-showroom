@@ -19,6 +19,18 @@ const router = createRouter({
     ]
   },
   {
+    path: '/',
+    component: () => import('../layouts/MainLayout.vue'),
+    children: [
+      {
+        name: "Catalog",
+        path: '',
+        component: () => import('../views/car-catalog.vue'),
+      },
+
+    ]
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('../views/404-page.vue'),
