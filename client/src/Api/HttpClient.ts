@@ -1,7 +1,8 @@
-import type { AxiosInstance, AxiosResponse } from "axios";
+import type { AxiosInstance } from "axios";
 import axios from "axios";
 import router from "../router";
 import type { AxiosHeaders } from "axios";
+import { useNotification } from "../composables/useNotification";
 
 const authRoutes = ['SignIn', 'SignUp']
 
@@ -14,8 +15,15 @@ class HttpClient {
         })
 
         this.axios.interceptors.response.use((response) => response, (error) => {
+            const { error: errorNotify } = useNotification();
+            const { status, statusText, data } = error.response
 
-            if (error.response.status === 403 && !authRoutes.includes(router.currentRoute.value.name as string)) {
+            errorNotify(
+                `[${status}] ${statusText}`,
+                data.message,
+            )
+
+            if (status === 403 && !authRoutes.includes(router.currentRoute.value.name as string)) {
                 router.push({ name: "SignIn" });
             }
 
