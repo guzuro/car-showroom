@@ -12,7 +12,7 @@ export const validation = (schemas: Array<ValidationChain>): express.RequestHand
 
         res.statusCode = 400;
         res.send({
-            message: validation.array()
+            message: validation.array().map(err => err.msg).join(', ')
         })
     }
 }
