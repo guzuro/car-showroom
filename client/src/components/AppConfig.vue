@@ -1,5 +1,5 @@
 <template>
-    <n-notification-provider placement="bottom-right">
+    <n-notification-provider placement="bottom-right" :max="5">
         <notify-content />
         <n-spin :show="loading">
             <slot />
