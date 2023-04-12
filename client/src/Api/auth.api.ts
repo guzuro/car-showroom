@@ -4,11 +4,11 @@ class AuthApi {
     constructor(private httpClient: typeof HttpClient) { }
 
     async login(body: any) {
-        return await this.httpClient.post('/auth/regesiter', body)
+        return await this.httpClient.post('/auth/login', body)
     }
 
     async signUp(body: any) {
-        return await this.httpClient.post('/auth/regesiter', body)
+        return await this.httpClient.post('/auth/register', body)
     }
 }
 
