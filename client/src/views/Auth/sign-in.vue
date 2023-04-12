@@ -50,8 +50,7 @@ import { defineComponent, ref } from 'vue'
 import { NCard, NForm, NFormItem, NInput, NIcon, NButton } from 'naive-ui';
 import { Person, GlassesOutline, Glasses, Eye } from '@vicons/ionicons5'
 import { RouterLink } from 'vue-router';
-import axios from 'axios';
-// import useAuth from '../../composables/useAuth';
+import useAuthController from '../../controllers/auth.controller';
 
 export default defineComponent({
     components: {
@@ -64,6 +63,8 @@ export default defineComponent({
         RouterLink
     },
     setup() {
+        const { loginHandler } = useAuthController()
+
         const signInData = ref({
             login: '',
             password: ''
@@ -83,7 +84,7 @@ export default defineComponent({
         }
 
         function doLogin(): void {
-            console.log('do login');
+            loginHandler(signInData.value);
         }
 
         return {
