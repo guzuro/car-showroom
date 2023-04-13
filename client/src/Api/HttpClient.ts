@@ -1,17 +1,17 @@
-import type { AxiosInstance } from "axios";
+import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import axios from "axios";
 import router from "../router";
-import type { AxiosHeaders } from "axios";
 import { useNotification } from "../composables/useNotification";
 
 const authRoutes = ['SignIn', 'SignUp']
 
-class HttpClient {
+export default class HttpClient {
     private axios: AxiosInstance;
 
-    constructor() {
+    constructor(config?: AxiosRequestConfig) {
+
         this.axios = axios.create({
-            baseURL: "http://localhost:3131/api",
+            baseURL: config?.baseURL ?? "http://localhost:3131/api",
         })
 
         this.axios.interceptors.response.use((response) => response, (error) => {
@@ -31,27 +31,44 @@ class HttpClient {
         });
     }
 
-    async post<T = any>(url: string, body?: any | undefined, headers?: AxiosHeaders) {
+    protected async post<T = any>(url: string, body?: any | undefined, headers?: AxiosRequestConfig['headers']) {
         return this.request<T>(url, RequestMethod.POST, body, headers)
     }
 
-    async get<T = any>(url: string, body: any, headers?: AxiosHeaders) {
-        return await this.request<T>(url, RequestMethod.POST, body, headers)
+    protected async get<T = any>(url: string, params?: Record<string, any>, headers?: AxiosRequestConfig['headers']) {
+        const query = ''
+
+        return await this.request<T>(url, RequestMethod.GET, params, headers)
     }
 
-    private async request<T>(url: string, method: RequestMethod, body?: any | undefined, headers?: AxiosHeaders) {
+    private async request<T>(url: string, method: RequestMethod, body?: any | undefined, headers?: AxiosRequestConfig['headers']) {
+
+        console.log(headers);
+
         return this.axios<T>({
             method,
             url,
-            headers,
+            headers: {
+                ...headers
+            },
+            ...method === RequestMethod.GET ? {
+                params: {
+                    ...body
+                }
+            } : {},
             data: {
                 ...body
             }
         })
     }
-}
 
-export default new HttpClient()
+    private queryBuilder(body: Record<string, any>): string {
+        return Object
+            .entries(body)
+            .map(([key, value]) => `${key}=${value}`)
+            .join('&')
+    }
+}
 
 const enum RequestMethod {
     POST = 'POST',
