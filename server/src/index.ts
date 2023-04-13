@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { AppDataSource } from './config/data-source';
 import authRouter from './routes/auth.routes';
+import carsRouter from './routes/cars.routes';
 import errorMiddleware from './middlewares/errorMiddleware';
 const cors = require('cors');
 
@@ -21,6 +22,7 @@ const port = process.env.PORT;
 app.use(cors())
 app.use(express.json());
 app.use('/api/auth', authRouter);
+app.use('/api', carsRouter);
 
 app.get('/', (req: Request, res: Response) => {
     res.send('hola');
