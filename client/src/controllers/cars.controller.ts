@@ -11,8 +11,7 @@ export default function useCarsController() {
 
             const { data } = await CarsApi.carsByModel(make)
 
-            console.log(data);
-
+            return data
         } finally {
             close()
         }
