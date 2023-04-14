@@ -1,13 +1,18 @@
 <template>
     <div class="layout-header-wrapper">
         <div class="layout-header">
-            <div class="layout-header__app-name">
-                WERTTT
+            <div class="layout-header__app-name" @click="gotoMainPage">
+                <img class="layout-header__logo" :src="logo">
+                <div class="layout-header__title header-title">
+                    <span class="header-title__top">
+                        Car
+                    </span>
+                    <span class="header-title__bottom">
+                        Stories
+                    </span>
+                </div>
             </div>
-            <div class="layout-header__user">
-                <layout-header-user />
-
-            </div>
+            <layout-header-user />
         </div>
     </div>
 </template>
@@ -15,29 +20,64 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import LayoutHeaderUser from './LayoutHeaderUser.vue';
+import logo from '../assets/image/logo.svg'
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
     components: {
         LayoutHeaderUser
     },
     setup() {
+        const { push } = useRouter()
 
+        function gotoMainPage() {
+            push({
+                name: "Catalog"
+            })
+        }
 
-        return {}
+        return {
+            logo,
+            gotoMainPage
+        }
     }
 })
 </script>
 
 <style scoped lang="scss">
 .layout-header {
-    &-wrapper {}
-
     display: flex;
     justify-content: space-between;
     padding: 25px;
 
-    &__app-name {}
+    &__app-name {
+        display: flex;
+        align-items: center;
 
-    &__user {}
+        &:hover {
+            opacity: .7;
+            cursor: pointer;
+        }
+    }
+
+    &__logo {
+        width: 100%;
+        height: 40px;
+    }
+
+    &__title {
+        line-height: 16px;
+    }
+
+    &__user {
+        display: flex;
+        align-items: c;
+    }
+
+    .header-title {
+        &__top {
+            text-transform: uppercase;
+        }
+    }
 }
 </style>
