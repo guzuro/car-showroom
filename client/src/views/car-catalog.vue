@@ -1,18 +1,36 @@
 <template>
-    <div class="car-catalog">
-        11554564454545
-    </div>
+  <div class="car-catalog">
+    <models-list @select-model="getMake" />
+
+    <pre>
+      {{ cars }}
+    </pre>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+import useCarsController from '../controllers/cars.controller'
+// import carApi from '../Api/car.api';
+import ModelsList from '../components/ModelsList.vue'
 
 export default defineComponent({
-    setup() {
+  components: {
+    ModelsList
+  },
+  setup() {
+    const cars = ref([])
+    const { carsByModel } = useCarsController()
 
-
-        return {}
+    async function getMake(model: string) {
+      cars.value = await carsByModel({ make: model })
     }
+
+    return {
+      getMake,
+      cars
+    }
+  }
 })
 </script>
 
