@@ -36,15 +36,10 @@ export default class HttpClient {
     }
 
     protected async get<T = any>(url: string, params?: Record<string, any>, headers?: AxiosRequestConfig['headers']) {
-        const query = ''
-
         return await this.request<T>(url, RequestMethod.GET, params, headers)
     }
 
     private async request<T>(url: string, method: RequestMethod, body?: any | undefined, headers?: AxiosRequestConfig['headers']) {
-
-        console.log(headers);
-
         return this.axios<T>({
             method,
             url,
