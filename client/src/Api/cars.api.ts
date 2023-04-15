@@ -5,6 +5,10 @@ class CarsApi extends HttpClient {
         super()
     }
 
+    async randomCars() {
+        return await this.get('/randomCars')
+    }
+
     async carsByModel(body: any) {
         return await this.get('/carsbymodel', body)
     }

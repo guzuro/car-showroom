@@ -2,29 +2,33 @@
   <div class="car-catalog">
     <models-list @select-model="getMake" />
 
-    <pre>
-      {{ cars }}
-    </pre>
+    <cars-list :cars="cars" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import useCarsController from '../controllers/cars.controller'
 // import carApi from '../Api/car.api';
 import ModelsList from '../components/ModelsList.vue'
+import CarsList from '../components/CarsList.vue'
 
 export default defineComponent({
   components: {
-    ModelsList
+    ModelsList,
+    CarsList
   },
   setup() {
+    const { carsByModel, randomCars } = useCarsController()
     const cars = ref([])
-    const { carsByModel } = useCarsController()
 
     async function getMake(model: string) {
       cars.value = await carsByModel({ make: model })
     }
+
+    onMounted(async () => {
+      cars.value = await randomCars();
+    })
 
     return {
       getMake,

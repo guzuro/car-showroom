@@ -18,7 +18,21 @@ export default function useCarsController() {
 
     }
 
+    async function randomCars() {
+        try {
+            open()
+
+            const { data } = await CarsApi.randomCars()
+
+            return data
+        } finally {
+            close()
+        }
+
+    }
+
     return {
-        carsByModel
+        carsByModel,
+        randomCars
     }
 }
