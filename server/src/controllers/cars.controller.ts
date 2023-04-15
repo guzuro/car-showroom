@@ -11,6 +11,37 @@ const httpCLient = new HttpClient({
     }
 })
 
+export const randomCars = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const getRequests = [
+            httpCLient.get('cars', { make: 'audi' }),
+            httpCLient.get('cars', { make: 'kia' }),
+            httpCLient.get('cars', { make: 'toyota' }),
+            httpCLient.get('cars', { make: 'volkswagen' })
+        ]
+
+        const cars = await
+            (await Promise.all(getRequests))
+                .map(({ data }) => data)
+                .flat()
+                .sort(() => Math.random() - Math.random())
+                .slice(0, 5)
+
+
+        res.statusCode = 200;
+        res.send(cars)
+    } catch (error: unknown) {
+
+        if (isAxiosError(error)) {
+            const axiosError: AxiosError = error
+
+            next(new HttpException(error.response?.status ?? 500, axiosError.message))
+        } else {
+            next(new HttpException(500, ''))
+
+        }
+    }
+}
 
 export const carsByModel = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -22,11 +53,10 @@ export const carsByModel = async (req: Request, res: Response, next: NextFunctio
             data
         )
     } catch (error: unknown) {
-        console.log(error, 'error');
         if (isAxiosError(error)) {
             const axiosError: AxiosError = error
 
-            next(new HttpException(Number.parseInt(error.code!), axiosError.message))
+            next(new HttpException(error.response?.status!, axiosError.message))
         } else {
             next(new HttpException(500, ''))
 
