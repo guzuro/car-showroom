@@ -5,11 +5,11 @@ export default function useCarsController() {
     const { open, close } = useLoader();
 
 
-    async function carsByModel(make: Record<'make', string>) {
+    async function carsByModel(query: Record<string, any>) {
         try {
             open()
 
-            const { data } = await CarsApi.carsByModel(make)
+            const { data } = await CarsApi.carsByModel(query)
 
             return data
         } finally {

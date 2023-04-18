@@ -2,7 +2,7 @@
   <div class="car-catalog">
     <models-list @select-model="getMake" />
 
-    <cars-list :cars="cars" />
+    <cars-list class="car-catalog__cars" :cars="cars" />
   </div>
 </template>
 
@@ -23,7 +23,7 @@ export default defineComponent({
     const cars = ref([])
 
     async function getMake(model: string) {
-      cars.value = await carsByModel({ make: model })
+      cars.value = await carsByModel({ make: model, limit: 10 })
     }
 
     onMounted(async () => {
@@ -38,4 +38,10 @@ export default defineComponent({
 })
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.car-catalog {
+  &__cars {
+    margin-top: 60px;
+  }
+}
+</style>
