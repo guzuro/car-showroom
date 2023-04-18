@@ -14,18 +14,23 @@ const httpCLient = new HttpClient({
 export const randomCars = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const getRequests = [
-            httpCLient.get('cars', { make: 'audi' }),
-            httpCLient.get('cars', { make: 'kia' }),
-            httpCLient.get('cars', { make: 'toyota' }),
-            httpCLient.get('cars', { make: 'volkswagen' })
+            httpCLient.get('cars', { make: 'audi', limit: 10 }),
+            httpCLient.get('cars', { make: 'kia', limit: 10 }),
+            httpCLient.get('cars', { make: 'toyota', limit: 10 }),
+            httpCLient.get('cars', { make: 'volkswagen', limit: 10 })
         ]
 
         const cars = await
             (await Promise.all(getRequests))
                 .map(({ data }) => data)
+                .map(data => {
+                    return data.map((el: any, index: number) => ({
+                        ...el, index
+                    }));
+                })
                 .flat()
                 .sort(() => Math.random() - Math.random())
-                .slice(0, 5)
+                .slice(0, 10)
 
 
         res.statusCode = 200;
@@ -63,26 +68,3 @@ export const carsByModel = async (req: Request, res: Response, next: NextFunctio
         }
     }
 }
-
-// class CarApi extends HttpClient {
-//     private headers: AxiosRequestConfig['headers'] = {
-//         'X-Api-Key': process.env.CAR_API_KEY
-//     }
-
-//     constructor() {
-//         super(
-//             {
-//                 baseURL: "https://api.api-ninjas.com/v1/",
-//             })
-//     }
-
-//     async getMake(body?: Record<string, any>) {
-//         return await this.get('cars', body, this.headers)
-//     }
-
-//     async signUp(body: any) {
-//         return await this.post('cars', body, this.headers)
-//     }
-// }
-
-// export default new CarApi()
