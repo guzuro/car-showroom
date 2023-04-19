@@ -11,10 +11,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import ModelListCard from './ModelListCard.vue'
-import audiImg from '../assets/image/audi.jpg'
-import kiaImg from '../assets/image/kia.jpg'
-import toyotaImg from '../assets/image/toyota.jpg'
-import volkswagenImg from '../assets/image/volkswagen.jpg'
+import audiImg from '../../assets/image/audi.jpg'
+import kiaImg from '../../assets/image/kia.jpg'
+import toyotaImg from '../../assets/image/toyota.jpg'
+import volkswagenImg from '../../assets/image/volkswagen.jpg'
+import type { ModelItem, ModelsList } from './types'
 
 export default defineComponent({
     components: {
@@ -22,7 +23,7 @@ export default defineComponent({
     },
     emits: ['selectModel'],
     setup(_, { emit }) {
-        const list = [
+        const list: ModelsList = [
             {
                 img: audiImg,
                 value: "audi"
@@ -41,7 +42,7 @@ export default defineComponent({
             },
         ];
 
-        function selectModel(model: string) {
+        function selectModel(model: ModelItem['value']) {
             emit('selectModel', model)
         }
         return {

@@ -6,17 +6,16 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
+import type { ModelItem } from './types';
 
 export default defineComponent({
     props: {
         model: {
-            type: Object as PropType<any>,
+            type: Object as PropType<ModelItem>,
             required: true
         }
     },
     setup() {
-
-
         return {}
     }
 })
