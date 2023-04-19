@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import HttpClient from "./HttpClient";
-import { AxiosError, AxiosRequestConfig, isAxiosError } from "axios";
+import { AxiosError, isAxiosError } from "axios";
 import HttpException from "../exceptions/HttpException";
+import setLoopIndex from "../logic/setIndex";
+import { CarInfo } from "../types/CardInfo.type";
 
 
 const httpCLient = new HttpClient({
@@ -14,20 +16,16 @@ const httpCLient = new HttpClient({
 export const randomCars = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const getRequests = [
-            httpCLient.get('cars', { make: 'audi', limit: 10 }),
-            httpCLient.get('cars', { make: 'kia', limit: 10 }),
-            httpCLient.get('cars', { make: 'toyota', limit: 10 }),
-            httpCLient.get('cars', { make: 'volkswagen', limit: 10 })
+            httpCLient.get<Array<CarInfo>>('cars', { make: 'audi', limit: 10 }),
+            httpCLient.get<Array<CarInfo>>('cars', { make: 'kia', limit: 10 }),
+            httpCLient.get<Array<CarInfo>>('cars', { make: 'toyota', limit: 10 }),
+            httpCLient.get<Array<CarInfo>>('cars', { make: 'volkswagen', limit: 10 })
         ]
 
         const cars = await
             (await Promise.all(getRequests))
                 .map(({ data }) => data)
-                .map(data => {
-                    return data.map((el: any, index: number) => ({
-                        ...el, index
-                    }));
-                })
+                .map(data => data.map(setLoopIndex))
                 .flat()
                 .sort(() => Math.random() - Math.random())
                 .slice(0, 10)
@@ -43,20 +41,17 @@ export const randomCars = async (req: Request, res: Response, next: NextFunction
             next(new HttpException(error.response?.status ?? 500, axiosError.message))
         } else {
             next(new HttpException(500, ''))
-
         }
     }
 }
 
 export const carsByModel = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { data } = await httpCLient.get('cars', req.query)
-        console.log(data, 'data');
+        const { data } = await httpCLient.get<Array<CarInfo>>('cars', req.query)
+        const indexedCars = data.map(setLoopIndex)
 
         res.statusCode = 200;
-        res.send(
-            data
-        )
+        res.send(indexedCars)
     } catch (error: unknown) {
         if (isAxiosError(error)) {
             const axiosError: AxiosError = error
@@ -64,7 +59,6 @@ export const carsByModel = async (req: Request, res: Response, next: NextFunctio
             next(new HttpException(error.response?.status!, axiosError.message))
         } else {
             next(new HttpException(500, ''))
-
         }
     }
 }
