@@ -5,18 +5,18 @@ const router = createRouter({
   routes: [{
     path: '/auth',
     component: () => import('../layouts/AuthLayout.vue'),
-    children: [
-      {
-        name: "SignIn",
-        path: 'sign-in',
-        component: () => import('../views/Auth/sign-in.vue'),
-      },
-      {
-        name: "SignUp",
-        path: 'sign-up',
-        component: () => import('../views/Auth/sign-up.vue'),
-      },
-    ]
+    // children: [
+    //   {
+    //     name: "SignIn",
+    //     path: 'sign-in',
+    //     component: () => import('../views/Auth/sign-in.vue'),
+    //   },
+    //   {
+    //     name: "SignUp",
+    //     path: 'sign-up',
+    //     component: () => import('../views/Auth/sign-up.vue'),
+    //   },
+    // ]
   },
   {
     path: '/',
