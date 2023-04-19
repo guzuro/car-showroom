@@ -9,9 +9,9 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import useCarsController from '../controllers/cars.controller'
-// import carApi from '../Api/car.api';
 import ModelsList from '../components/ModelsList.vue'
 import CarsList from '../components/CarsList.vue'
+import type { CarInfo } from '../types/CarInfo.type'
 
 export default defineComponent({
   components: {
@@ -20,7 +20,7 @@ export default defineComponent({
   },
   setup() {
     const { carsByModel, randomCars } = useCarsController()
-    const cars = ref([])
+    const cars = ref<Array<CarInfo>>([])
 
     async function getMake(model: string) {
       cars.value = await carsByModel({ make: model, limit: 10 })

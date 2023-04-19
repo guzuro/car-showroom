@@ -7,7 +7,7 @@
         </template>
         <template #cover>
             <div class="cars-list-item__image">
-                <n-icon :color="warningColor" class="cars-list-item__bookmark" size="30" @click="addToWishList(car)">
+                <n-icon :color="warningColor" class="cars-list-item__bookmark" size="30">
                     <bookmark />
                 </n-icon>
                 <img
@@ -18,11 +18,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, type PropType } from 'vue'
 import { NCard } from 'naive-ui'
 import { Bookmark } from '@vicons/ionicons5';
 import { NIcon } from 'naive-ui';
 import { useThemeVars } from 'naive-ui';
+import type { CarInfo } from '../types/CarInfo.type';
 
 export default defineComponent({
     components: {
@@ -32,7 +33,7 @@ export default defineComponent({
     },
     props: {
         car: {
-            type: Object,
+            type: Object as PropType<CarInfo>,
             required: true
         }
     },

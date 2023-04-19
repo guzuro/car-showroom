@@ -13,6 +13,7 @@ import { useThemeVars } from 'naive-ui';
 import { useUserStore } from '../stores/userStore';
 import { useNotification } from '../composables/useNotification';
 import CarsListItem from './CarsListItem.vue'
+import type { CarInfo } from '../types/CarInfo.type';
 
 export default defineComponent({
     components: {
@@ -20,8 +21,9 @@ export default defineComponent({
     },
     props: {
         cars: {
-            type: Object as PropType<any>,
-            required: true
+            type: Array as PropType<Array<CarInfo>>,
+            required: true,
+            default: () => []
         }
     },
 

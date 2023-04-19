@@ -1,3 +1,4 @@
+import type { CarInfo } from "../types/CarInfo.type"
 import HttpClient from "./HttpClient"
 
 class CarsApi extends HttpClient {
@@ -6,15 +7,11 @@ class CarsApi extends HttpClient {
     }
 
     async randomCars() {
-        return await this.get('/randomCars')
+        return await this.get<Array<CarInfo>>('/randomCars')
     }
 
     async carsByModel(body: any) {
-        return await this.get('/carsbymodel', body)
-    }
-
-    async signUp(body: any) {
-        return await this.post('/auth/register', body)
+        return await this.get<Array<CarInfo>>('/carsbymodel', body)
     }
 }
 
