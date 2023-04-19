@@ -4,20 +4,24 @@
             <cars-list-item :car="car" />
             {{ car }}
         </li>
+
+        <auth-modal v-model:show="authModalOpen" />
     </ul>
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue'
+import { defineComponent, ref, type PropType } from 'vue'
 import { useThemeVars } from 'naive-ui';
 import { useUserStore } from '../stores/userStore';
 import { useNotification } from '../composables/useNotification';
 import CarsListItem from './CarsListItem.vue'
 import type { CarInfo } from '../types/CarInfo.type';
+import AuthModal from './AuthModal.vue';
 
 export default defineComponent({
     components: {
-        CarsListItem
+        CarsListItem,
+        AuthModal
     },
     props: {
         cars: {
@@ -32,10 +36,12 @@ export default defineComponent({
         const { error } = useNotification()
         const theme = useThemeVars()
         const { warningColor, warningColorHover } = theme.value;
+        const authModalOpen = ref(false)
 
-        function addToWishList(car: any) {
+        function addToWishList(car: CarInfo) {
             if (!user) {
                 error('Sign in to add to wishlist')
+                authModalOpen.value = true
             } else {
                 const { model, index } = car
             }
@@ -44,7 +50,8 @@ export default defineComponent({
         return {
             warningColor,
             warningColorHover,
-            addToWishList
+            addToWishList,
+            authModalOpen
         }
     }
 })
