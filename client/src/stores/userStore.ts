@@ -1,18 +1,15 @@
 import { defineStore } from "pinia"
+import { ref } from "vue"
 
-interface UserState {
-    user: any
-}
+export const useUserStore = defineStore('user', () => {
+    const user = ref<Object | null>(null)
 
-export const useUserStore = defineStore('user', {
-    state: (): UserState => {
-        return {
-            user: null
-        }
-    },
-    actions: {
-        saveUser(user: any) {
-            this.user = user
-        }
-    },
+    function saveUser(payload: any) {
+        user.value = payload
+    }
+
+    return {
+        user,
+        saveUser
+    }
 })
