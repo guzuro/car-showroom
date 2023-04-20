@@ -1,6 +1,7 @@
 <template>
-    <n-modal :title="modalAuthTitle" style="width: 600px" preset="card" class="auth-modal" v-model="showModal">
-        <sign-in-form v-if="currentForm === AuthForm.SignIn" @signUpClick="changeForm(AuthForm.SignUp)" />
+    <n-modal :title="modalAuthTitle" style="width: 600px" preset="card" class="auth-modal" v-model:show="modalActive">
+        <sign-in-form v-if="currentForm === AuthForm.SignIn" @signUpClick="changeForm(AuthForm.SignUp)"
+            @on-login="onLogin" />
         <sign-up-form v-if="currentForm === AuthForm.SignUp" @signInClick="changeForm(AuthForm.SignIn)" />
     </n-modal>
 </template>
@@ -11,7 +12,7 @@ enum AuthForm {
     SignUp
 }
 
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, toRefs } from 'vue'
 import { NModal, } from 'naive-ui';
 import SignInForm from './Auth/SignInForm.vue';
 import SignUpForm from './Auth/SignUpForm.vue';
@@ -26,8 +27,10 @@ export default defineComponent({
         modelValue: Boolean
     },
     emits: ['update:modelValue'],
-    setup() {
+    setup(props, { emit }) {
         const currentForm = ref(AuthForm.SignIn)
+
+        const { modelValue } = toRefs(props)
 
         const modalAuthTitle = computed(() => {
             if (currentForm.value === AuthForm.SignIn) return 'Sign In'
@@ -40,12 +43,17 @@ export default defineComponent({
             currentForm.value = formType
         }
 
+        function onLogin(res: any) {
+            emit('update:modelValue', false)
+        }
+
         return {
             currentForm,
             modalAuthTitle,
             changeForm,
-            showModal: ref(false),
             AuthForm,
+            onLogin,
+            modalActive: modelValue
         }
     }
 })

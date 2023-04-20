@@ -33,7 +33,7 @@
                 <n-button :disabled="!signUpData.login &&
                     !signUpData.email &&
                     !signUpData.password
-                    " type="success" @click="doSignup">
+                    " type="success" @click="validate">
                     Sign up
                 </n-button>
             </div>
@@ -60,6 +60,7 @@ import {
     NIcon,
     NButton,
     type FormRules,
+    type FormInst
 } from "naive-ui";
 import {
     Person,
@@ -68,6 +69,9 @@ import {
     Glasses,
     Eye,
 } from "@vicons/ionicons5";
+import { useNotification } from '../../composables/useNotification';
+import handleFormValidate from '../../utils/handleFormValidate';
+import type { FormValidateCallback } from "naive-ui/es/form/src/interface";
 
 export default defineComponent({
     components: {
@@ -79,6 +83,9 @@ export default defineComponent({
     },
     emits: ['signInClick'],
     setup(props, { emit }) {
+        const { error } = useNotification()
+        const formRef = ref<FormInst | null>(null)
+
         const signUpData = ref({
             login: "",
             email: "",
@@ -103,27 +110,42 @@ export default defineComponent({
                     trigger: ["input"],
                 },
                 {
-                    min: 6,
-                    message: "Must be at least 6 symbols",
+                    min: 8,
+                    message: "Must be at least 8 symbols",
                     trigger: ["input"],
                 },
             ],
         };
 
         function doSignup(): void {
-            console.log('do login');
+            console.log('do signup');
+        }
+
+
+        function validate(e: MouseEvent) {
+            const onValidate: FormValidateCallback = (errors) => {
+                if (!errors) {
+                    doSignup()
+                } else {
+                    error('Fill the fields correctly')
+                }
+            }
+
+            handleFormValidate(e, formRef, onValidate)
+
         }
 
         return {
             emit,
             signUpData,
             rules,
-            doSignup,
             Person,
             GlassesOutline,
             Glasses,
             Eye,
             MailOutline,
+            formRef,
+            validate,
         };
     },
 });

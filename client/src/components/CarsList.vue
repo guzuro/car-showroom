@@ -5,7 +5,7 @@
             {{ car }}
         </li>
 
-        <auth-modal v-model:show="authModalOpen" />
+        <auth-modal v-model="authModalOpen" />
     </ul>
 </template>
 
@@ -17,6 +17,7 @@ import { useNotification } from '../composables/useNotification';
 import CarsListItem from './CarsListItem.vue'
 import type { CarInfo } from '../types/CarInfo.type';
 import AuthModal from './AuthModal.vue';
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
     components: {
@@ -32,14 +33,18 @@ export default defineComponent({
     },
 
     setup() {
-        const { user } = useUserStore()
-        const { error } = useNotification()
-        const theme = useThemeVars()
-        const { warningColor, warningColorHover } = theme.value;
+        const store = useUserStore()
+        const { user } = storeToRefs(store)
+
         const authModalOpen = ref(false)
 
+        const { error } = useNotification()
+
+        const theme = useThemeVars()
+        const { warningColor, warningColorHover } = theme.value;
+
         function addToWishList(car: CarInfo) {
-            if (!user) {
+            if (!user.value) {
                 error('Sign in to add to wishlist')
                 authModalOpen.value = true
             } else {
