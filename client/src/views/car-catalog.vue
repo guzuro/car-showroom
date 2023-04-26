@@ -10,7 +10,7 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import useCarsController from '../controllers/cars.controller'
 import ModelsList from '../components/CarModels/ModelsList.vue'
-import CarsList from '../components/CarsList.vue'
+import CarsList from '../components/CarsList/CarsList.vue'
 import type { CarInfo } from '../types/CarInfo.type'
 import type { ModelItem } from '../components/CarModels/types'
 
@@ -28,7 +28,7 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      cars.value = await randomCars();
+      cars.value = await randomCars()
     })
 
     return {
