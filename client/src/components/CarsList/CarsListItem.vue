@@ -33,7 +33,7 @@ import { NCard } from 'naive-ui'
 import { Bookmark } from '@vicons/ionicons5'
 import { NIcon } from 'naive-ui'
 import { useThemeVars } from 'naive-ui'
-import type { CarInfo } from '../types/CarInfo.type'
+import type { CarInfo } from '../../types/CarInfo.type'
 
 export default defineComponent({
   components: {

@@ -12,11 +12,11 @@
 <script lang="ts">
 import { defineComponent, ref, type PropType } from 'vue'
 import { useThemeVars } from 'naive-ui'
-import { useUserStore } from '../stores/userStore'
-import { useNotification } from '../composables/useNotification'
+import { useUserStore } from '../../stores/userStore'
+import { useNotification } from '../../composables/useNotification'
 import CarsListItem from './CarsListItem.vue'
-import type { CarInfo } from '../types/CarInfo.type'
-import AuthModal from './AuthModal.vue'
+import type { CarInfo } from '../../types/CarInfo.type'
+import AuthModal from './../AuthModal.vue'
 import { storeToRefs } from 'pinia'
 
 export default defineComponent({
@@ -63,7 +63,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import '../assets/variables.scss';
+@import '../../assets/variables.scss';
 
 .cars-list {
   display: flex;
