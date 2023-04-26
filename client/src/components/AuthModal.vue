@@ -14,6 +14,7 @@
     <sign-up-form
       v-if="currentForm === AuthForm.SignUp"
       @signInClick="changeForm(AuthForm.SignIn)"
+      @on-signup="onSignup"
     />
   </n-modal>
 </template>
@@ -56,18 +57,20 @@ export default defineComponent({
     }
 
     const authModal = computed({
-      // getter
       get() {
         return unref(modelValue)
       },
-      // setter
       set(newValue) {
         emit('update:modelValue', newValue)
       }
     })
 
-    function onLogin(res: any) {
+    function onLogin() {
       authModal.value = false
+    }
+
+    function onSignup() {
+      changeForm(AuthForm.SignIn)
     }
 
     return {
@@ -76,6 +79,7 @@ export default defineComponent({
       changeForm,
       AuthForm,
       onLogin,
+      onSignup,
       authModal
     }
   }

@@ -1,31 +1,31 @@
 import AuthApi from '../Api/auth.api';
 import { useUserStore } from '../stores/userStore';
-import { useLoader } from '../composables/useLoader';
 import { useNotification } from '../composables/useNotification';
 
 export default function useAuthController() {
-    const { open, close } = useLoader();
     const { saveUser } = useUserStore();
     const { success } = useNotification();
 
 
     async function loginHandler(loginData: any) {
-        try {
-            open()
+        const { data } = await AuthApi.login(loginData)
 
-            const { data } = await AuthApi.login(loginData)
-            console.log('lol');
+        saveUser(data)
+        success("Logged in!");
 
-            saveUser(data)
-            success("Logged in!");
+        return data
+    }
 
-            return data
-        } finally {
-            close()
-        }
+    async function registerHandler(registerData: any) {
+        const { data } = await AuthApi.signUp(registerData)
+
+        success("Success! User your login and password to login now!");
+
+        return data
     }
 
     return {
-        loginHandler
+        loginHandler,
+        registerHandler
     }
 }
