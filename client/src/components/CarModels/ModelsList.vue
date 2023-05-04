@@ -1,75 +1,120 @@
 <template>
-    <div class="wrapper">
-        <ul class="models-list">
-            <li class="models-list__item" v-for="li in list" :key="li.value" @click="selectModel(li.value)">
-                <model-list-card :model="li" />
-            </li>
-        </ul>
-    </div>
+  <div class="wrapper">
+    <ul class="models-list">
+      <div>
+        <li
+          v-for="li in list"
+          :key="li.value"
+          class="models-list__item"
+          @click="selectModel(li.value)"
+        >
+          <model-list-card
+            :class="{ 'models-list__item-active': selectedModel === li.value }"
+            :model="li"
+          />
+          <n-icon size="32" class="models-list__icon" v-if="selectedModel === li.value">
+            <star />
+          </n-icon>
+        </li>
+      </div>
+    </ul>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import ModelListCard from './ModelListCard.vue'
 import audiImg from '../../assets/image/audi.jpg'
 import kiaImg from '../../assets/image/kia.jpg'
 import toyotaImg from '../../assets/image/toyota.jpg'
 import volkswagenImg from '../../assets/image/volkswagen.jpg'
-import type { ModelItem, ModelsList } from './types'
+import type { CarModel, ModelItem, ModelsList } from './types'
+import { NIcon, useThemeVars } from 'naive-ui'
+import { Star } from '@vicons/ionicons5'
+
+const list: ModelsList = [
+  {
+    img: audiImg,
+    value: 'audi'
+  },
+  {
+    img: kiaImg,
+    value: 'kia'
+  },
+  {
+    img: toyotaImg,
+    value: 'toyota'
+  },
+  {
+    img: volkswagenImg,
+    value: 'volkswagen'
+  }
+]
 
 export default defineComponent({
-    components: {
-        ModelListCard
-    },
-    emits: ['selectModel'],
-    setup(_, { emit }) {
-        const list: ModelsList = [
-            {
-                img: audiImg,
-                value: "audi"
-            },
-            {
-                img: kiaImg,
-                value: "kia"
-            },
-            {
-                img: toyotaImg,
-                value: "toyota"
-            },
-            {
-                img: volkswagenImg,
-                value: "volkswagen"
-            },
-        ];
+  components: {
+    ModelListCard,
+    NIcon,
+    Star
+  },
+  emits: ['selectModel'],
+  setup(_, { emit }) {
+    const selectedModel = ref<CarModel | null>(null)
+    const theme = useThemeVars()
+    const { warningColor } = theme.value
 
-        function selectModel(model: ModelItem['value']) {
-            emit('selectModel', model)
-        }
-        return {
-            list,
-            selectModel
-        }
+    function selectModel(model: ModelItem['value']) {
+      if (model === selectedModel.value) {
+        selectedModel.value = null
+        emit('selectModel', null)
+      } else {
+        selectedModel.value = model
+        emit('selectModel', model)
+      }
     }
+
+    return {
+      list,
+      selectedModel,
+      warningColor,
+      selectModel
+    }
+  }
 })
 </script>
 
 <style scoped lang="scss">
 .wrapper {
-    overflow: auto;
+  overflow: auto;
 
-    .models-list {
-        text-align: center;
-        white-space: nowrap;
+  .models-list {
+    text-align: center;
+    white-space: nowrap;
 
-        &__item {
-            display: inline-block;
-            margin-right: 5px;
+    &__item {
+      display: inline-block;
+      position: relative;
+      margin-right: 5px;
 
-            &:last-child {
-                margin-right: 0;
-            }
-        }
+      &-active {
+        filter: brightness(55%);
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
 
+    &__icon {
+      position: absolute;
+      pointer-events: none;
+      color: v-bind(warningColor);
+      right: 0;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+  }
 }
 </style>

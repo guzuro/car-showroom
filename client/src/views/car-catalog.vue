@@ -23,13 +23,19 @@ export default defineComponent({
     const { carsByModel, randomCars } = useCarsController()
     const cars = ref<Array<CarInfo>>([])
 
-    async function getMake(model: ModelItem['value']) {
-      cars.value = await carsByModel({ make: model, limit: 10 })
+    async function getMake(model: ModelItem['value'] | null) {
+      if (model === null) {
+        getRandomCars()
+      } else {
+        cars.value = await carsByModel({ make: model, limit: 10 })
+      }
     }
 
-    onMounted(async () => {
+    async function getRandomCars() {
       cars.value = await randomCars()
-    })
+    }
+
+    onMounted(getRandomCars)
 
     return {
       getMake,
