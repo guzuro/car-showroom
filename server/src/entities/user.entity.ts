@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn, Unique } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn, Unique, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
+import { Wish } from './wish.entity';
+import { WishList } from './wishlist.entity';
 
 @Entity()
 export class User {
@@ -21,6 +23,9 @@ export class User {
 
     @Column()
     password?: string
+
+    @OneToMany(() => WishList, (list) => list.user)
+    wishes!: WishList[]
 
     @CreateDateColumn()
     createdAt!: Date

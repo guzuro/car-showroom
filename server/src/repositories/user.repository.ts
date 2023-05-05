@@ -10,5 +10,10 @@ export const saveUser = async (newUser: CreateUserDto) => {
 }
 
 export const getUserByLogin = async (login: string) => {
-    return await userRepository.findOneBy({ login })
+    return await userRepository.findOne({
+        where: {
+            login
+        },
+        relations: ['wishes', 'wishes.items']
+    })
 }
