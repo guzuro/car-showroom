@@ -31,8 +31,9 @@ export const randomCars = async (req: Request, res: Response, next: NextFunction
                 .slice(0, 10)
 
 
-        res.statusCode = 200;
-        res.send(cars)
+        res
+            .status(200)
+            .send(cars)
     } catch (error: unknown) {
 
         if (isAxiosError(error)) {
@@ -50,8 +51,9 @@ export const carsByModel = async (req: Request, res: Response, next: NextFunctio
         const { data } = await httpCLient.get<Array<CarInfo>>('cars', req.query)
         const indexedCars = data.map(setLoopIndex)
 
-        res.statusCode = 200;
-        res.send(indexedCars)
+        res
+            .status(200)
+            .send(indexedCars)
     } catch (error: unknown) {
         if (isAxiosError(error)) {
             const axiosError: AxiosError = error

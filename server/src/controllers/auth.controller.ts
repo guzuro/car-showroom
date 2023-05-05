@@ -16,10 +16,11 @@ export const registerUserHandler = async (req: Request, res: Response, next: Nex
             password: hashPass
         })
 
-        res.statusCode = 200;
-        res.send({
-            message: 'User created, log in with your login and password!'
-        })
+        res
+            .status(200)
+            .send({
+                message: 'User created, log in with your login and password!'
+            })
     } catch (error: any) {
         next(new TypeOrmException(error))
     }
@@ -36,10 +37,11 @@ export const loginUserHandler = async (req: Request, res: Response, next: NextFu
             const passwordIsOk = await verifyPassword(password, user.password!)
 
             if (passwordIsOk) {
-                res.statusCode = 200;
-                res.send(
-                    user.omitPassword()
-                )
+                res
+                    .status(200)
+                    .send(
+                        user.omitPassword()
+                    )
             } else {
                 next(new HttpException(401, 'Wrong password'))
             }
