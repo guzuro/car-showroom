@@ -1,23 +1,24 @@
 <template>
-  <div class="wrapper">
-    <ul class="models-list">
-      <div>
-        <li
-          v-for="li in list"
-          :key="li.value"
-          class="models-list__item"
-          @click="selectModel(li.value)"
-        >
-          <model-list-card
-            :class="{ 'models-list__item-active': selectedModel === li.value }"
-            :model="li"
-          />
-          <n-icon size="32" class="models-list__icon" v-if="selectedModel === li.value">
-            <star />
-          </n-icon>
-        </li>
-      </div>
+  <div class="models-list-wrapper">
+    <ul class="models-list" ref="scrollableWrapper">
+      <li
+        v-for="li in list"
+        :key="li.value"
+        class="models-list__item"
+        @click="selectModel(li.value)"
+      >
+        <model-list-card
+          :class="{ 'models-list__item-active': selectedModel === li.value }"
+          :model="li"
+        />
+        <n-icon size="32" class="models-list__icon" v-if="selectedModel === li.value">
+          <star />
+        </n-icon>
+      </li>
     </ul>
+    <n-icon v-if="isSwipeIconVisible" class="models-list-wrapper__swipe" size="32">
+      <arrow-up />
+    </n-icon>
   </div>
 </template>
 
@@ -30,7 +31,8 @@ import toyotaImg from '../../assets/image/toyota.jpg'
 import volkswagenImg from '../../assets/image/volkswagen.jpg'
 import type { CarModel, ModelItem, ModelsList } from './types'
 import { NIcon, useThemeVars } from 'naive-ui'
-import { Star } from '@vicons/ionicons5'
+import { Star, ArrowUp } from '@vicons/ionicons5'
+import { useScrollableIcon } from '../../composables/useScrollableIcon'
 
 const list: ModelsList = [
   {
@@ -55,13 +57,16 @@ export default defineComponent({
   components: {
     ModelListCard,
     NIcon,
-    Star
+    Star,
+    ArrowUp
   },
   emits: ['selectModel'],
   setup(_, { emit }) {
     const selectedModel = ref<CarModel | null>(null)
     const theme = useThemeVars()
     const { warningColor } = theme.value
+    const scrollableWrapper = ref<HTMLDivElement | null>(null)
+    const { isSwipeIconVisible } = useScrollableIcon(scrollableWrapper)
 
     function selectModel(model: ModelItem['value']) {
       if (model === selectedModel.value) {
@@ -77,44 +82,60 @@ export default defineComponent({
       list,
       selectedModel,
       warningColor,
-      selectModel
+      selectModel,
+      scrollableWrapper,
+      isSwipeIconVisible
     }
   }
 })
 </script>
 
 <style scoped lang="scss">
-.wrapper {
+.models-list {
+  text-align: center;
+  white-space: nowrap;
   overflow: auto;
 
-  .models-list {
+  &-wrapper {
     text-align: center;
-    white-space: nowrap;
 
-    &__item {
-      display: inline-block;
-      position: relative;
-      margin-right: 5px;
+    &__swipe {
+      animation: spin 1.3s infinite alternate-reverse;
 
-      &-active {
-        filter: brightness(55%);
-      }
-
-      &:last-child {
-        margin-right: 0;
+      @keyframes spin {
+        from {
+          transform: rotate(-35deg);
+        }
+        to {
+          transform: rotate(35deg);
+        }
       }
     }
+  }
 
-    &__icon {
-      position: absolute;
-      pointer-events: none;
-      color: v-bind(warningColor);
-      right: 0;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      margin: auto;
+  &__item {
+    display: inline-block;
+    position: relative;
+    margin-right: 5px;
+
+    &-active {
+      filter: brightness(55%);
     }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    pointer-events: none;
+    color: v-bind(warningColor);
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
   }
 }
 </style>
