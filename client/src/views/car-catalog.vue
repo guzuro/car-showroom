@@ -35,7 +35,9 @@ export default defineComponent({
       cars.value = await randomCars()
     }
 
-    onMounted(getRandomCars)
+    onMounted(() => {
+      getRandomCars()
+    })
 
     return {
       getMake,
