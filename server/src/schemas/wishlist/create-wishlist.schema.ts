@@ -5,6 +5,8 @@ export const createWithlistSchema = [
         .exists()
         .withMessage('"name" field required')
         .trim()
+        .notEmpty()
+        .withMessage('"name" must be filled')
         .escape(),
     body('userId')
         .exists()
