@@ -1,28 +1,30 @@
 <template>
   <ul class="cars-list">
     <li v-for="(car, index) in cars" :key="index">
-      <cars-list-item :car="car" @bookmark-click="addToWishList" />
+      <cars-list-item :car="car" @bookmark-click="addToWishlist" />
       {{ car }}
     </li>
 
     <auth-modal v-model="authModalOpen" />
+    <wishlist-create-modal v-model="wishlistCreateModalOpen" />
   </ul>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, type PropType } from 'vue'
 import { useThemeVars } from 'naive-ui'
-import { useUserStore } from '../../stores/userStore'
-import { useNotification } from '../../composables/useNotification'
 import CarsListItem from './CarsListItem.vue'
 import type { CarInfo } from '../../types/CarInfo.type'
 import AuthModal from './../AuthModal.vue'
-import { storeToRefs } from 'pinia'
+import { useWishlistStore } from '../../stores/wishlistStore'
+import WishlistCreateModal from '../WishlistCreateModal.vue'
+import { WishlistAddFrontendActions } from '../../types/Wishlist.type'
 
 export default defineComponent({
   components: {
     CarsListItem,
-    AuthModal
+    AuthModal,
+    WishlistCreateModal
   },
   props: {
     cars: {
@@ -33,30 +35,33 @@ export default defineComponent({
   },
 
   setup() {
-    const store = useUserStore()
-    const { user } = storeToRefs(store)
-
-    const authModalOpen = ref(false)
-
-    const { error } = useNotification()
-
     const theme = useThemeVars()
     const { warningColor, warningColorHover } = theme.value
 
-    function addToWishList(car: CarInfo) {
-      if (!user.value) {
-        error('Sign in to add to wishlist')
-        authModalOpen.value = true
-      } else {
-        const { model, index } = car
+    const wishlistStore = useWishlistStore()
+    const authModalOpen = ref(false)
+    const wishlistCreateModalOpen = ref(false)
+
+    async function addToWishlist(car: CarInfo) {
+      try {
+        await wishlistStore.addToWishlist(car)
+      } catch (e: unknown) {
+        if (!(e instanceof Error)) {
+          if (e === WishlistAddFrontendActions.NEED_AUTH) {
+            authModalOpen.value = true
+          } else if (e === WishlistAddFrontendActions.WISHLIST_EMPTY) {
+            wishlistCreateModalOpen.value = true
+          }
+        }
       }
     }
 
     return {
       warningColor,
       warningColorHover,
-      addToWishList,
-      authModalOpen
+      addToWishlist,
+      authModalOpen,
+      wishlistCreateModalOpen
     }
   }
 })
