@@ -1,15 +1,7 @@
 <template>
-  <n-modal
-    style="width: 600px"
-    preset="card"
-    class="wishlist-create-modal"
-    v-model:show="createModal"
-  >
-    <n-input
-      v-model:value="listName"
-      class="wishlist-create-modal__input"
-      placeholder="List name..."
-    />
+  <n-modal title="Add new wishlist" style="width: 600px" preset="card" class="wishlist-create-modal"
+    v-model:show="createModal">
+    <n-input v-model:value="listName" class="wishlist-create-modal__input" placeholder="List name..." />
     <div class="wishlist-create-modal__button-add">
       <n-button type="success" @click="addNewList"> Create </n-button>
     </div>
