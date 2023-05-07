@@ -1,17 +1,13 @@
 import express from "express";
-import { createUserSchema } from "../schemas/auth/create-user.schema";
-import { loginUserSchema } from "../schemas/auth/login-user.schema";
 import { validation } from "../middlewares/validation";
-import { loginUserHandler, registerUserHandler } from "../controllers/auth.controller";
+import { createWithlistSchema } from "../schemas/wishlist/create-wishlist.schema";
+import { createListHandler, removeListHandler } from "../controllers/wishlist.controller";
+import { deleteWishlistSchema } from "../schemas/wishlist/delete-wishlist.schema";
 
 const router = express.Router()
 
+router.post('/create', validation(createWithlistSchema), createListHandler)
 
-router.post('/create', validation(createUserSchema), registerUserHandler)
-
-router.post('/update', validation(loginUserSchema), loginUserHandler)
-
-router.post('/delete')
-
+router.post('/delete', validation(deleteWishlistSchema), removeListHandler)
 
 export default router
