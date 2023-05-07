@@ -7,14 +7,24 @@ export class WishList {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column({ name: 'user_id' })
+    @Column({ name: 'user_id', select: false })
     userId!: number
 
-    @ManyToOne(() => User, (user) => user.wishes)
+    @ManyToOne(
+        () => User, (user) => user.wishes,
+        {
+            onDelete: "CASCADE"
+        }
+    )
     @JoinColumn({ name: 'user_id' })
     user!: User
 
-    @OneToMany(() => Wish, (wish) => wish.list)
+    @Column()
+    name!: string
+
+    @OneToMany(
+        () => Wish, (wish) => wish.list,
+    )
     items?: Array<Wish>
 
     @CreateDateColumn()
