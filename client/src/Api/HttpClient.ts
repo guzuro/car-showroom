@@ -39,6 +39,10 @@ export default class HttpClient {
         return await this.request<T>(url, RequestMethod.GET, params, headers)
     }
 
+    protected async delete<T = any>(url: string, params?: Record<string, any>, headers?: AxiosRequestConfig['headers']) {
+        return await this.request<T>(url, RequestMethod.DELETE, params, headers)
+    }
+
     private async request<T>(url: string, method: RequestMethod, body?: any | undefined, headers?: AxiosRequestConfig['headers']) {
         return this.axios<T>({
             method,
@@ -46,7 +50,7 @@ export default class HttpClient {
             headers: {
                 ...headers
             },
-            ...method === RequestMethod.GET ? {
+            ...[RequestMethod.GET, RequestMethod.DELETE].includes(method) ? {
                 params: {
                     ...body
                 }
@@ -56,16 +60,10 @@ export default class HttpClient {
             }
         })
     }
-
-    private queryBuilder(body: Record<string, any>): string {
-        return Object
-            .entries(body)
-            .map(([key, value]) => `${key}=${value}`)
-            .join('&')
-    }
 }
 
 const enum RequestMethod {
     POST = 'POST',
-    GET = 'GET'
+    GET = 'GET',
+    DELETE = 'DELETE'
 }
