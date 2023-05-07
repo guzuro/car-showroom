@@ -16,7 +16,7 @@
         </n-icon>
       </li>
     </ul>
-    <n-icon v-if="isSwipeIconVisible" class="models-list-wrapper__swipe" size="32">
+    <n-icon v-if="isWrapperScrollable" class="models-list-wrapper__swipe" size="32">
       <arrow-up />
     </n-icon>
   </div>
@@ -32,7 +32,7 @@ import volkswagenImg from '../../assets/image/volkswagen.jpg'
 import type { CarModel, ModelItem, ModelsList } from './types'
 import { NIcon, useThemeVars } from 'naive-ui'
 import { Star, ArrowUp } from '@vicons/ionicons5'
-import { useScrollableIcon } from '../../composables/useScrollableIcon'
+import { useElementScrollable } from '../../composables/useElementScrollable'
 
 const list: ModelsList = [
   {
@@ -66,7 +66,7 @@ export default defineComponent({
     const theme = useThemeVars()
     const { warningColor } = theme.value
     const scrollableWrapper = ref<HTMLDivElement | null>(null)
-    const { isSwipeIconVisible } = useScrollableIcon(scrollableWrapper)
+    const { isWrapperScrollable } = useElementScrollable(scrollableWrapper)
 
     function selectModel(model: ModelItem['value']) {
       if (model === selectedModel.value) {
@@ -84,7 +84,7 @@ export default defineComponent({
       warningColor,
       selectModel,
       scrollableWrapper,
-      isSwipeIconVisible
+      isWrapperScrollable
     }
   }
 })

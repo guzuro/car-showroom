@@ -1,16 +1,16 @@
 import { onMounted, onUnmounted, ref, type Ref } from "vue";
 
-export function useScrollableIcon<T>(htmlRef: Ref<T extends HTMLElement ? T : null>) {
+export function useElementScrollable<T>(htmlRef: Ref<T extends HTMLElement ? T : null>) {
 
-    const isSwipeIconVisible = ref(false)
+    const isWrapperScrollable = ref(false)
 
     function watchScrollableWrapper() {
         if (htmlRef.value) {
 
-            isSwipeIconVisible.value =
+            isWrapperScrollable.value =
                 htmlRef.value.scrollWidth > htmlRef.value.clientWidth
         } else {
-            isSwipeIconVisible.value = false
+            isWrapperScrollable.value = false
         }
     }
 
@@ -25,6 +25,6 @@ export function useScrollableIcon<T>(htmlRef: Ref<T extends HTMLElement ? T : nu
     })
 
     return {
-        isSwipeIconVisible,
+        isWrapperScrollable,
     }
 }
