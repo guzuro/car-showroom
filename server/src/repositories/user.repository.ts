@@ -1,6 +1,6 @@
 import { AppDataSource } from "../config/data-source";
-import { CreateUserDto } from "../dto/create-user.dto";
-import { LoginUserDto } from "../dto/login-user.dto";
+import { CreateUserDto } from "../dto/User/create-user.dto";
+import { LoginUserDto } from "../dto/User/login-user.dto";
 import { User } from "../entities/user.entity";
 
 const userRepository = AppDataSource.getRepository(User);
