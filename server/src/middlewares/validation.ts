@@ -10,9 +10,10 @@ export const validation = (schemas: Array<ValidationChain>): express.RequestHand
 
         if (validation.isEmpty()) return next()
 
-        res.statusCode = 400;
-        res.send({
-            message: validation.array().map(err => err.msg).join(', ')
-        })
+        res
+            .status(400)
+            .send({
+                message: validation.array().map(err => err.msg).join(', ')
+            })
     }
 }
