@@ -366,10 +366,10 @@
     "@typescript-eslint/types" "5.57.1"
     eslint-visitor-keys "^3.3.0"
 
-"@vicons/ionicons5@^0.12.0":
+"@vicons/material@^0.12.0":
   version "0.12.0"
-  resolved "https://npm.9dev.ru/@vicons%2fionicons5/-/ionicons5-0.12.0.tgz#c39fda04420dfae3b58053faf8aaf3555253299d"
-  integrity sha512-Iy1EUVRpX0WWxeu1VIReR1zsZLMc4fqpt223czR+Rpnrwu7pt46nbnC2ycO7ItI/uqDLJxnbcMC7FujKs9IfFA==
+  resolved "https://registry.yarnpkg.com/@vicons/material/-/material-0.12.0.tgz#068e72fa40bd7f780af5fc68011fb69010c8e0b5"
+  integrity sha512-chv1CYAl8P32P3Ycwgd5+vw/OFNc2mtkKdb1Rw4T5IJmKy6GVDsoUKV3N2l208HATn7CCQphZtuPDdsm7K2kmA==
 
 "@vitejs/plugin-vue@^4.0.0":
   version "4.1.0"
