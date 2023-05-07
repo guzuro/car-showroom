@@ -12,12 +12,12 @@
           :model="li"
         />
         <n-icon size="32" class="models-list__icon" v-if="selectedModel === li.value">
-          <star />
+          <star-filled />
         </n-icon>
       </li>
     </ul>
     <n-icon v-if="isWrapperScrollable" class="models-list-wrapper__swipe" size="32">
-      <arrow-up />
+      <swipe-filled />
     </n-icon>
   </div>
 </template>
@@ -31,7 +31,7 @@ import toyotaImg from '../../assets/image/toyota.jpg'
 import volkswagenImg from '../../assets/image/volkswagen.jpg'
 import type { CarModel, ModelItem, ModelsList } from './types'
 import { NIcon, useThemeVars } from 'naive-ui'
-import { Star, ArrowUp } from '@vicons/ionicons5'
+import { StarFilled, SwipeFilled } from '@vicons/material'
 import { useElementScrollable } from '../../composables/useElementScrollable'
 
 const list: ModelsList = [
@@ -57,8 +57,8 @@ export default defineComponent({
   components: {
     ModelListCard,
     NIcon,
-    Star,
-    ArrowUp
+    StarFilled,
+    SwipeFilled
   },
   emits: ['selectModel'],
   setup(_, { emit }) {
@@ -101,6 +101,7 @@ export default defineComponent({
 
     &__swipe {
       animation: spin 1.3s infinite alternate-reverse;
+      margin-top: 5px;
 
       @keyframes spin {
         from {

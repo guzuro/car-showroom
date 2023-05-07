@@ -17,7 +17,7 @@
           size="30"
           @click="onBookmarkClick"
         >
-          <bookmark />
+          <bookmark-filled />
         </n-icon>
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKeSfXSGkhfHh3OrZ0LbggDGyT45sz1IRTzQJnzClJ&s"
@@ -30,7 +30,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
 import { NCard } from 'naive-ui'
-import { Bookmark } from '@vicons/ionicons5'
+import { BookmarkFilled } from '@vicons/material'
 import { NIcon } from 'naive-ui'
 import { useThemeVars } from 'naive-ui'
 import type { CarInfo } from '../../types/CarInfo.type'
@@ -38,7 +38,7 @@ import type { CarInfo } from '../../types/CarInfo.type'
 export default defineComponent({
   components: {
     NCard,
-    Bookmark,
+    BookmarkFilled,
     NIcon
   },
   props: {

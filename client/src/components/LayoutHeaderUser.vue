@@ -3,13 +3,13 @@
     <div class="layout-user-header__user" v-if="user">
       {{ userFullName }}
       <n-icon :size="30">
-        <PersonCircle />
+        <person-filled />
       </n-icon>
     </div>
     <div v-else class="layout-user-header__auth" @click="authModalOpen = true">
       Sign in
       <n-icon :size="30">
-        <LogInOutline />
+        <log-in-filled />
       </n-icon>
 
       <auth-modal v-model="authModalOpen" />
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { LogInOutline, PersonCircle } from '@vicons/ionicons5'
+import { LogInFilled, PersonFilled } from '@vicons/material'
 import { NIcon } from 'naive-ui'
 import { defineComponent, ref } from 'vue'
 import { useUserStore } from '../stores/userStore'
@@ -29,8 +29,8 @@ import AuthModal from './AuthModal.vue'
 export default defineComponent({
   components: {
     NIcon,
-    LogInOutline,
-    PersonCircle,
+    LogInFilled,
+    PersonFilled,
     AuthModal
   },
   setup() {
