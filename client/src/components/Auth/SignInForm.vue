@@ -5,7 +5,7 @@
         <n-form-item label="Login" path="login">
           <n-input v-model:value="signInData.login" class="card__login" placeholder="Login...">
             <template #prefix>
-              <n-icon :component="Person" />
+              <n-icon :component="PersonFilled" />
             </template>
           </n-input>
         </n-form-item>
@@ -18,13 +18,13 @@
             placeholder="Password..."
           >
             <template #prefix>
-              <n-icon :component="Eye" />
+              <n-icon :component="PasswordFilled" />
             </template>
             <template #password-visible-icon>
-              <n-icon :component="GlassesOutline" />
+              <n-icon :component="LockOpenFilled" />
             </template>
             <template #password-invisible-icon>
-              <n-icon :component="Glasses" />
+              <n-icon :component="LockFilled" />
             </template>
           </n-input>
         </n-form-item>
@@ -60,7 +60,7 @@ import {
   type FormRules,
   type FormInst
 } from 'naive-ui'
-import { Person, GlassesOutline, Glasses, Eye } from '@vicons/ionicons5'
+import { PersonFilled, LockOpenFilled, PasswordFilled, LockFilled } from '@vicons/material'
 import type { FormValidateCallback } from 'naive-ui/es/form/src/interface'
 import handleFormValidate from '../../utils/handleFormValidate'
 
@@ -136,10 +136,10 @@ export default defineComponent({
       emit,
       signInData,
       rules,
-      Person,
-      GlassesOutline,
-      Glasses,
-      Eye,
+      PersonFilled,
+      PasswordFilled,
+      LockFilled,
+      LockOpenFilled,
       formRef,
       handleSubmit,
       authInLoading

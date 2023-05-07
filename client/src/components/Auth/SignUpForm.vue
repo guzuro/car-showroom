@@ -5,14 +5,14 @@
         <n-form-item label="Login" path="login">
           <n-input v-model:value="signUpData.login" class="card__login" placeholder="Login...">
             <template #prefix>
-              <n-icon :component="Person" />
+              <n-icon :component="PersonFilled" />
             </template>
           </n-input>
         </n-form-item>
         <n-form-item label="E-mail" path="email">
           <n-input v-model:value="signUpData.email" class="card__email" placeholder="E-mail...">
             <template #prefix>
-              <n-icon :component="MailOutline" />
+              <n-icon :component="EmailFilled" />
             </template>
           </n-input>
         </n-form-item>
@@ -25,13 +25,13 @@
             placeholder="Password..."
           >
             <template #prefix>
-              <n-icon :component="Eye" />
+              <n-icon :component="PasswordFilled" />
             </template>
             <template #password-visible-icon>
-              <n-icon :component="GlassesOutline" />
+              <n-icon :component="LockOpenFilled" />
             </template>
             <template #password-invisible-icon>
-              <n-icon :component="Glasses" />
+              <n-icon :component="LockFilled" />
             </template>
           </n-input>
         </n-form-item>
@@ -58,10 +58,16 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { NForm, NFormItem, NInput, NIcon, NButton, type FormRules, type FormInst } from 'naive-ui'
-import { Person, MailOutline, GlassesOutline, Glasses, Eye } from '@vicons/ionicons5'
 import { useNotification } from '../../composables/useNotification'
 import handleFormValidate from '../../utils/handleFormValidate'
 import type { FormValidateCallback } from 'naive-ui/es/form/src/interface'
+import {
+  PersonFilled,
+  EmailFilled,
+  LockOpenFilled,
+  PasswordFilled,
+  LockFilled
+} from '@vicons/material'
 import useAuthController from '../../controllers/auth.controller'
 
 export default defineComponent({
@@ -138,11 +144,11 @@ export default defineComponent({
       emit,
       signUpData,
       rules,
-      Person,
-      GlassesOutline,
-      Glasses,
-      Eye,
-      MailOutline,
+      PersonFilled,
+      LockOpenFilled,
+      PasswordFilled,
+      LockFilled,
+      EmailFilled,
       formRef,
       handleSubmit,
       authInLoading
