@@ -5,4 +5,9 @@ export type ModelItem = {
     value: CarModel
 }
 
-export type CarModel = 'volkswagen' | 'toyota' | 'kia' | 'audi'
+export enum CarModel {
+    volkswagen = 'volkswagen',
+    toyota = 'toyota',
+    kia = 'kia',
+    audi = 'audi'
+}

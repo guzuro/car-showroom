@@ -29,7 +29,7 @@ import audiImg from '../../assets/image/audi.jpg'
 import kiaImg from '../../assets/image/kia.jpg'
 import toyotaImg from '../../assets/image/toyota.jpg'
 import volkswagenImg from '../../assets/image/volkswagen.jpg'
-import type { CarModel, ModelItem, ModelsList } from './types'
+import { CarModel, type ModelItem, type ModelsList } from './types'
 import { NIcon, useThemeVars } from 'naive-ui'
 import { StarFilled, SwipeFilled } from '@vicons/material'
 import { useElementScrollable } from '../../composables/useElementScrollable'
@@ -37,19 +37,19 @@ import { useElementScrollable } from '../../composables/useElementScrollable'
 const list: ModelsList = [
   {
     img: audiImg,
-    value: 'audi'
+    value: CarModel.audi
   },
   {
     img: kiaImg,
-    value: 'kia'
+    value: CarModel.kia
   },
   {
     img: toyotaImg,
-    value: 'toyota'
+    value: CarModel.toyota
   },
   {
     img: volkswagenImg,
-    value: 'volkswagen'
+    value: CarModel.volkswagen
   }
 ]
 
