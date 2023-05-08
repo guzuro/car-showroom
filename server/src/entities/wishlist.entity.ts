@@ -7,6 +7,16 @@ export class WishList {
     @PrimaryGeneratedColumn()
     id!: number
 
+    @Column({
+        default: false
+    })
+    isDefault!: boolean
+
+    @Column({
+        default: null
+    })
+    shareLink!: string
+
     @Column({ name: 'user_id', select: false })
     userId!: number
 

@@ -36,15 +36,3 @@ export const removeListHandler = async (req: Request, res: Response, next: NextF
     }
 }
 
-export const addToWishlistHandler = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        res
-            .status(500)
-            .send({
-                message: 'NOT IMPLEMENTED!',
-            })
-    } catch (error: any) {
-        next(new TypeOrmException(error))
-    }
-}
-

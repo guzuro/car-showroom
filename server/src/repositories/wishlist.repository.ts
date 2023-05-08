@@ -16,7 +16,7 @@ export const deleteWishlist = async (id: DeleteWishlistDto) => {
 }
 
 export const getWishlistById = async ({ id }: GetWishListById) => {
-    return await wishlistRepository.find({
+    return await wishlistRepository.findOne({
         where: {
             id
         },
