@@ -2,6 +2,8 @@ import type { Wish } from "./Wish.type"
 
 export type Wishlist = {
     id: number,
+    isDefault: boolean
+    shareLink: string | null
     items: Array<Wish>
     createdAt: string,
     updatedAt: string

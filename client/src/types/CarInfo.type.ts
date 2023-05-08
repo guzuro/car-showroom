@@ -1,3 +1,5 @@
+import type { CarModel } from "../components/CarModels/types"
+
 export type CarInfo = {
     index: number
     city_mpg: number
@@ -8,7 +10,7 @@ export type CarInfo = {
     drive: DriveType
     fuel_type: FuelType
     highway_mpg: number
-    make: string
+    make: CarModel
     model: string
     transmission: Transmission
     year: number
