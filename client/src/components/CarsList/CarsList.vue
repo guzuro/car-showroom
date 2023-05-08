@@ -1,13 +1,15 @@
 <template>
-  <n-grid :x-gap="24" :y-gap="24" cols="1 s:2 m:3 l:4" responsive="screen" class="cars-list">
-    <n-grid-item v-for="(car, index) in cars" :key="index">
-      <cars-list-item :car="car" @bookmark-click="addToWishlist" />
-      {{ car }}
-    </n-grid-item>
+  <div class="cars-list-wrapper">
+    <n-grid class="cars-list" :x-gap="24" :y-gap="24" cols="1 s:2 m:3 l:4" responsive="screen">
+      <n-grid-item v-for="(car, index) in cars" :key="index">
+        <cars-list-item :car="car" @bookmark-click="addToWishlist" />
+        {{ car }}
+      </n-grid-item>
+    </n-grid>
 
     <auth-modal v-model="authModalOpen" />
     <wishlist-create-modal v-model="wishlistCreateModalOpen" />
-  </n-grid>
+  </div>
 </template>
 
 <script lang="ts">
