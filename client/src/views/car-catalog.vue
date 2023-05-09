@@ -7,12 +7,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref, watchEffect } from 'vue'
 import useCarsController from '../controllers/cars.controller'
 import ModelsList from '../components/CarModels/ModelsList.vue'
 import CarsList from '../components/CarsList/CarsList.vue'
 import type { CarInfo } from '../types/CarInfo.type'
 import type { ModelItem } from '../components/CarModels/types'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   components: {
@@ -22,13 +23,25 @@ export default defineComponent({
   setup() {
     const { carsByModel, randomCars } = useCarsController()
     const cars = ref<Array<CarInfo>>([])
+    const route = useRoute()
+    const { replace } = useRouter()
 
-    async function getMake(model: ModelItem['value'] | null) {
-      if (model === null) {
-        getRandomCars()
+    watchEffect(async () => {
+      const query = route.query
+
+      if (query['make']) {
+        cars.value = await carsByModel({ limit: 10, ...query })
       } else {
-        cars.value = await carsByModel({ make: model, limit: 10 })
+        getRandomCars()
       }
+    })
+
+    async function getMake(model?: ModelItem['value']) {
+      replace({
+        query: {
+          make: model?.toString()
+        }
+      })
     }
 
     async function getRandomCars() {
