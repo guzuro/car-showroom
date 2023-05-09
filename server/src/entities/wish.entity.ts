@@ -14,7 +14,10 @@ export class Wish {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column({ name: 'list_id', select: false })
+    @Column({
+        name: 'list_id',
+        select: false
+    })
     listId!: number
 
     @ManyToOne(() => WishList, (list) => list.items)
@@ -29,4 +32,9 @@ export class Wish {
         enum: CarModel,
     })
     carModel!: string
+
+    @Column({
+        type: "jsonb",
+    })
+    carInfo!: string
 }
