@@ -6,23 +6,22 @@ import { useNotification } from "../composables/useNotification"
 import WishListsApi from '../Api/wishlists.api'
 import WishApi from '../Api/wish.api'
 import type { CarInfo } from "../types/CarInfo.type"
-import type { CarModel } from "../components/CarModels/types"
 import { useLoader } from "../composables/useLoader"
+import wishApi from "../Api/wish.api"
+import type { Wish } from "../types/Wish.type"
 
 export const useWishlistStore = defineStore('wishlists', () => {
     const wishes = ref<Array<Wishlist>>([])
     const userStore = useUserStore()
-    const { error, success } = useNotification()
+    const { success, error } = useNotification()
     const { open, close } = useLoader()
 
     const firstListIfLengthOne = computed(() => {
-        if (wishes.value.length === 1) return wishes.value[0].id
+        if (wishes.value.length === 1) return wishes.value[0]
         return false
     })
 
-    const defaultList = computed(() => {
-        return wishes.value.find(w => w.isDefault)?.id;
-    })
+    const defaultList = computed(() => wishes.value.find(w => w.isDefault))
 
     function setWishesToStore(payload: Array<Wishlist>) {
         wishes.value = payload
@@ -32,7 +31,26 @@ export const useWishlistStore = defineStore('wishlists', () => {
         wishes.value.push(payload)
     }
 
-    async function addToWishlist(car: CarInfo) {
+    function replaceExistedWishlist(newList: Wishlist) {
+        const idx = wishes.value.findIndex(w => w.id === newList.id)
+
+        wishes.value.splice(idx, 1, newList)
+    }
+
+    function isCarInList(car: CarInfo) {
+        const checkCallback = (wishItem: Wish) =>
+            wishItem.carIndex === car.index && wishItem.carModel === car.make
+
+        if (firstListIfLengthOne.value) {
+            return firstListIfLengthOne.value.items.find(checkCallback)
+        } else if (defaultList.value) {
+            return defaultList.value.items.find(checkCallback)
+        } else {
+            return undefined
+        }
+    }
+
+    async function handleAddingToWishlist(car: CarInfo) {
         if (!userStore.user) {
             error('Sign in to add to wishlist')
 
@@ -40,36 +58,45 @@ export const useWishlistStore = defineStore('wishlists', () => {
         } else if (wishes.value && !wishes.value.length) {
             throw WishlistAddFrontendActions.WISHLIST_EMPTY
         } else if (firstListIfLengthOne.value) {
-            addWishToList(firstListIfLengthOne.value, car.make, car.index)
+            checkCarIsInList(firstListIfLengthOne.value.id, car)
         } else if (defaultList.value) {
-            addWishToList(defaultList.value, car.make, car.index)
+            checkCarIsInList(defaultList.value.id, car)
         } else {
             throw WishlistAddFrontendActions.SELECT_WISHLIST_TO_ADD
         }
     }
 
-    async function addWishToList(listId: number, carModel: CarModel, carIndex: number) {
+    async function checkCarIsInList(listId: number, car: CarInfo) {
+        const isInList = isCarInList(car)
+
+        if (isInList) {
+            deleteFromWishlist(isInList.id, listId)
+        } else {
+            addToWishList(listId, car)
+        }
+    }
+
+    // api
+
+    async function addToWishList(listId: number, car: CarInfo) {
         try {
+            const { index, make, ...otherFields } = car
+
             open()
+
             const { data } = await WishApi.addToWishList({
                 listId,
-                carModel,
-                carIndex,
+                carModel: make,
+                carIndex: index,
+                carInfo: otherFields
             })
 
             success(data.message)
 
-            updateListItem(data.wishlist)
+            replaceExistedWishlist(data.wishlist)
         } finally {
             close()
         }
-    }
-
-    function updateListItem(newList: Wishlist) {
-        const idx = wishes.value.findIndex(w => w.id === newList.id)
-        console.log(wishes.value.splice(idx, 1, newList), 'wishes.value.splice(idx, 1, newList)');
-
-        wishes.value = wishes.value.splice(idx, 1, newList)
     }
 
     async function createWishlist(payload: any) {
@@ -90,8 +117,17 @@ export const useWishlistStore = defineStore('wishlists', () => {
         }
     }
 
-    function deleteWishlist(payload: any) {
-        console.log("implement deleteWishlist");
+    async function deleteFromWishlist(id: number, listId: number) {
+        open()
+
+        try {
+            const { data } = await wishApi.removeFromWishList({ id }, { listId })
+            success(data.message)
+
+            replaceExistedWishlist(data.wishlist)
+        } finally {
+            close()
+        }
     }
 
 
@@ -99,8 +135,8 @@ export const useWishlistStore = defineStore('wishlists', () => {
         wishes,
         setWishesToStore,
         createWishlist,
-        deleteWishlist,
-        addToWishlist,
-        addWishToList,
+        deleteFromWishlist,
+        handleAddingToWishlist,
+        isCarInList
     }
 })

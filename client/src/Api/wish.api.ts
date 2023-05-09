@@ -1,10 +1,4 @@
-import type { Wishlist } from "../types/Wishlist.type"
 import HttpClient from "./HttpClient"
-
-type CreateWishlistRes = {
-    message: string,
-    wishlist: Wishlist
-}
 
 class WishApi extends HttpClient {
     constructor() {
@@ -15,8 +9,8 @@ class WishApi extends HttpClient {
         return await this.post<Array<any>>('/wish/add', body)
     }
 
-    async addWishFromList(body: any) {
-        return await this.post<CreateWishlistRes>('/wishlist/create', body)
+    async removeFromWishList({ id }: any, params?: Record<string, any>) {
+        return await this.delete<Array<any>>(`/wish/delete/${id}`, params)
     }
 }
 
