@@ -71,7 +71,7 @@ export default defineComponent({
     function selectModel(model: ModelItem['value']) {
       if (model === selectedModel.value) {
         selectedModel.value = null
-        emit('selectModel', null)
+        emit('selectModel')
       } else {
         selectedModel.value = model
         emit('selectModel', model)

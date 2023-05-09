@@ -48,7 +48,7 @@ export default defineComponent({
 
     async function addToWishlist(car: CarInfo) {
       try {
-        await wishlistStore.addToWishlist(car)
+        await wishlistStore.handleAddingToWishlist(car)
       } catch (e: unknown) {
         if (!(e instanceof Error)) {
           if (e === WishlistAddFrontendActions.NEED_AUTH) {

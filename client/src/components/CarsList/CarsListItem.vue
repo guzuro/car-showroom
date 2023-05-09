@@ -12,8 +12,9 @@
     <template #cover>
       <div class="cars-list-item__image">
         <n-icon
-          :color="warningColor"
+          :color="!isCarInList(car) ? warningColor : errorColor"
           class="cars-list-item__bookmark"
+          :class="hoverClass"
           size="30"
           @click="onBookmarkClick"
         >
@@ -28,12 +29,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue'
+import { computed, defineComponent, type PropType } from 'vue'
 import { NCard } from 'naive-ui'
 import { BookmarkFilled } from '@vicons/material'
 import { NIcon } from 'naive-ui'
 import { useThemeVars } from 'naive-ui'
 import type { CarInfo } from '../../types/CarInfo.type'
+import { useWishlistStore } from '../../stores/wishlistStore'
 
 export default defineComponent({
   components: {
@@ -50,7 +52,14 @@ export default defineComponent({
   emits: ['bookmarkClick'],
   setup(props, { emit }) {
     const theme = useThemeVars()
-    const { warningColor, warningColorHover } = theme.value
+    const { isCarInList } = useWishlistStore()
+    const { warningColor, warningColorHover, errorColor, errorColorHover } = theme.value
+
+    const hoverClass = computed(() => {
+      return isCarInList(props.car)
+        ? 'cars-list-item__bookmark-in-list'
+        : 'cars-list-item__bookmark-not-in-list'
+    })
 
     function onBookmarkClick() {
       emit('bookmarkClick', props.car)
@@ -58,8 +67,12 @@ export default defineComponent({
 
     return {
       warningColor,
+      errorColor,
       warningColorHover,
-      onBookmarkClick
+      errorColorHover,
+      onBookmarkClick,
+      isCarInList,
+      hoverClass
     }
   }
 })
@@ -77,8 +90,16 @@ export default defineComponent({
     right: 0;
     cursor: pointer;
 
-    &:hover svg {
-      color: v-bind(warningColorHover) !important;
+    &-not-in-list {
+      &:hover svg {
+        color: v-bind(warningColorHover) !important;
+      }
+    }
+
+    &-in-list {
+      &:hover svg {
+        color: v-bind(errorColorHover) !important;
+      }
     }
   }
 
