@@ -31,6 +31,10 @@ export const useWishlistStore = defineStore('wishlists', () => {
         wishes.value.push(payload)
     }
 
+    const wishlistSelectOptions = computed(() => {
+        return wishes.value.map(w => ({ label: w.name, value: w.id }))
+    })
+
     function replaceExistedWishlist(newList: Wishlist) {
         const idx = wishes.value.findIndex(w => w.id === newList.id)
 
@@ -137,6 +141,8 @@ export const useWishlistStore = defineStore('wishlists', () => {
         createWishlist,
         deleteFromWishlist,
         handleAddingToWishlist,
-        isCarInList
+        checkCarIsInList,
+        isCarInList,
+        wishlistSelectOptions
     }
 })

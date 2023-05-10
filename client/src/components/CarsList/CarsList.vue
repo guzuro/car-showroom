@@ -9,6 +9,7 @@
 
     <auth-modal v-model="authModalOpen" />
     <wishlist-create-modal v-model="wishlistCreateModalOpen" />
+    <select-list-modal v-model="selectWishlistModalOpen" />
   </div>
 </template>
 
@@ -20,6 +21,7 @@ import type { CarInfo } from '../../types/CarInfo.type'
 import AuthModal from './../AuthModal.vue'
 import { useWishlistStore } from '../../stores/wishlistStore'
 import WishlistCreateModal from '../WishlistCreateModal.vue'
+import SelectListModal from '../SelectListModal.vue'
 import { WishlistAddFrontendActions } from '../../types/Wishlist.type'
 
 export default defineComponent({
@@ -27,6 +29,7 @@ export default defineComponent({
     CarsListItem,
     AuthModal,
     WishlistCreateModal,
+    SelectListModal,
     NGrid,
     NGridItem
   },
@@ -45,6 +48,7 @@ export default defineComponent({
     const wishlistStore = useWishlistStore()
     const authModalOpen = ref(false)
     const wishlistCreateModalOpen = ref(false)
+    const selectWishlistModalOpen = ref(false)
 
     async function addToWishlist(car: CarInfo) {
       try {
@@ -55,6 +59,8 @@ export default defineComponent({
             authModalOpen.value = true
           } else if (e === WishlistAddFrontendActions.WISHLIST_EMPTY) {
             wishlistCreateModalOpen.value = true
+          } else if (e === WishlistAddFrontendActions.SELECT_WISHLIST_TO_ADD) {
+            selectWishlistModalOpen.value = true
           }
         }
       }
@@ -66,6 +72,7 @@ export default defineComponent({
       addToWishlist,
       authModalOpen,
       wishlistCreateModalOpen,
+      selectWishlistModalOpen,
       NGrid,
       NGridItem
     }
