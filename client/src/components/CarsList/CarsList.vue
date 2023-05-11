@@ -22,7 +22,10 @@ import AuthModal from './../AuthModal.vue'
 import { useWishlistStore } from '../../stores/wishlistStore'
 import WishlistCreateModal from '../WishlistCreateModal.vue'
 import SelectListModal from '../SelectListModal.vue'
-import { WishlistAddFrontendActions } from '../../types/Wishlist.type'
+import { storeToRefs } from 'pinia'
+import useWishlistsController from '../../controllers/wishlists.controller'
+import { useNotification } from '../../composables/useNotification'
+import { useUserStore } from '../../stores/userStore'
 
 export default defineComponent({
   components: {
@@ -44,27 +47,43 @@ export default defineComponent({
   setup() {
     const theme = useThemeVars()
     const { warningColor, warningColorHover } = theme.value
+    const { error } = useNotification()
 
-    const { handleAddingToWishlist, checkCarIsInList } = useWishlistStore()
+    const userStore = useUserStore()
+    const wishListStore = useWishlistStore()
+    const { wishes, firstListIfLengthOne, defaultList } = storeToRefs(wishListStore)
+
+    const { addToWishListHandler, deleteFromWishlistHandler } = useWishlistsController()
+
     const authModalOpen = ref(false)
     const wishlistCreateModalOpen = ref(false)
     const selectWishModalRef = ref<any>(null)
 
     async function addToWishlist(car: CarInfo) {
-      try {
-        await handleAddingToWishlist(car)
-      } catch (e: unknown) {
-        if (!(e instanceof Error)) {
-          if (e === WishlistAddFrontendActions.NEED_AUTH) {
-            authModalOpen.value = true
-          } else if (e === WishlistAddFrontendActions.WISHLIST_EMPTY) {
-            wishlistCreateModalOpen.value = true
-          } else if (e === WishlistAddFrontendActions.SELECT_WISHLIST_TO_ADD) {
-            selectWishModalRef.value.openDialog().then((value: number) => {
-              checkCarIsInList(value, car)
-            })
-          }
-        }
+      if (!userStore.user) {
+        error('Sign in to add to wishlist')
+
+        authModalOpen.value = true
+      } else if (wishes.value && !wishes.value.length) {
+        wishlistCreateModalOpen.value = true
+      } else if (firstListIfLengthOne.value) {
+        checkCarIsInList(firstListIfLengthOne.value.id, car)
+      } else if (defaultList.value) {
+        checkCarIsInList(defaultList.value.id, car)
+      } else {
+        selectWishModalRef.value.openDialog().then((value: number) => {
+          checkCarIsInList(value, car)
+        })
+      }
+    }
+
+    async function checkCarIsInList(listId: number, car: CarInfo) {
+      const isInList = wishListStore.isCarInList(car)
+
+      if (isInList) {
+        deleteFromWishlistHandler(listId, isInList.id)
+      } else {
+        addToWishListHandler(listId, car)
       }
     }
 

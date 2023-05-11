@@ -1,51 +1,87 @@
 import { useLoader } from '../composables/useLoader';
-import CarsApi from '../Api/cars.api';
+import WishListsApi from '../Api/wishlists.api';
+import WishApi from '../Api/wish.api'
+import { useUserStore } from '../stores/userStore';
+import { useWishlistStore } from '../stores/wishlistStore';
+import { useNotification } from '../composables/useNotification';
+import type { CarInfo } from '../types/CarInfo.type';
 
-export default function useCarsController() {
+export default function useWishlistsController() {
     const { open, close } = useLoader();
+    const { success } = useNotification()
 
+    const userStore = useUserStore()
+    const { addToWishes, replaceExistedWishlist } = useWishlistStore()
 
-    async function addWishlist(query: Record<string, any>) {
+    async function createListHandler(name: string) {
         try {
             open()
 
-            const { data } = await CarsApi.carsByModel(query)
+            const { data } = await WishListsApi.createWishlist({
+                userId: userStore.user.id,
+                name
+            })
 
-            return data
+            success(data.message)
+            addToWishes(data.wishlist)
+
         } finally {
             close()
         }
     }
 
-    async function getWishlists() {
+    async function removeListHandler() {
         try {
             open()
 
-            const { data } = await CarsApi.randomCars()
+            // const { data } = await CarsApi.randomCars()
 
-            return data
+            // return data
         } finally {
             close()
         }
 
     }
 
-    async function removeWishlist() {
+    async function addToWishListHandler(listId: number, car: CarInfo) {
         try {
+            const { index, make, ...otherFields } = car
+
             open()
 
-            const { data } = await CarsApi.randomCars()
+            const { data }: any = await WishApi.addToWishList({
+                listId,
+                carModel: make,
+                carIndex: index,
+                carInfo: otherFields
+            })
 
-            return data
+            success(data.message)
+
+            replaceExistedWishlist(data.wishlist)
         } finally {
             close()
         }
+    }
 
+    async function deleteFromWishlistHandler(listId: number, id: number) {
+        open()
+
+        try {
+            const { data }: any = await WishApi.removeFromWishList({ id }, { listId })
+            success(data.message)
+
+            replaceExistedWishlist(data.wishlist)
+        } finally {
+            close()
+        }
     }
 
     return {
-        addWishlist,
-        getWishlists,
-        removeWishlist
+        createListHandler,
+        removeListHandler,
+        addToWishListHandler,
+        deleteFromWishlistHandler
+
     }
 }
