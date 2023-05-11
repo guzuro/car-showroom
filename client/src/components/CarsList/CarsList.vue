@@ -9,7 +9,7 @@
 
     <auth-modal v-model="authModalOpen" />
     <wishlist-create-modal v-model="wishlistCreateModalOpen" />
-    <select-list-modal v-model="selectWishlistModalOpen" />
+    <select-list-modal ref="selectWishModalRef" />
   </div>
 </template>
 
@@ -45,14 +45,14 @@ export default defineComponent({
     const theme = useThemeVars()
     const { warningColor, warningColorHover } = theme.value
 
-    const wishlistStore = useWishlistStore()
+    const { handleAddingToWishlist, checkCarIsInList } = useWishlistStore()
     const authModalOpen = ref(false)
     const wishlistCreateModalOpen = ref(false)
-    const selectWishlistModalOpen = ref(false)
+    const selectWishModalRef = ref<any>(null)
 
     async function addToWishlist(car: CarInfo) {
       try {
-        await wishlistStore.handleAddingToWishlist(car)
+        await handleAddingToWishlist(car)
       } catch (e: unknown) {
         if (!(e instanceof Error)) {
           if (e === WishlistAddFrontendActions.NEED_AUTH) {
@@ -60,7 +60,9 @@ export default defineComponent({
           } else if (e === WishlistAddFrontendActions.WISHLIST_EMPTY) {
             wishlistCreateModalOpen.value = true
           } else if (e === WishlistAddFrontendActions.SELECT_WISHLIST_TO_ADD) {
-            selectWishlistModalOpen.value = true
+            selectWishModalRef.value.openDialog().then((value: number) => {
+              checkCarIsInList(value, car)
+            })
           }
         }
       }
@@ -72,9 +74,9 @@ export default defineComponent({
       addToWishlist,
       authModalOpen,
       wishlistCreateModalOpen,
-      selectWishlistModalOpen,
       NGrid,
-      NGridItem
+      NGridItem,
+      selectWishModalRef
     }
   }
 })

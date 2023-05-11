@@ -4,7 +4,7 @@
     style="width: 600px"
     preset="card"
     class="wishlist-create-modal"
-    v-model:show="selectModal"
+    v-model:show="selectListModalOpen"
   >
     <n-select :options="wishlistSelectOptions" @update:value="handleUpdateValue" />
   </n-modal>
@@ -12,39 +12,44 @@
 
 <script lang="ts">
 import { NModal, NSelect } from 'naive-ui'
-import { computed, defineComponent, toRefs, unref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useWishlistStore } from '../stores/wishlistStore'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   components: {
     NModal,
     NSelect
   },
-  props: {
-    modelValue: Boolean
-  },
   emits: ['update:modelValue', 'onListSelect'],
-  setup(props, { emit }) {
-    const { wishlistSelectOptions } = useWishlistStore()
-    const { modelValue } = toRefs(props)
+  setup(props, { expose }) {
+    expose({ openDialog })
 
-    const selectModal = computed({
-      get() {
-        return unref(modelValue)
-      },
-      set(newValue: boolean) {
-        emit('update:modelValue', newValue)
-      }
-    })
+    const { wishlistSelectOptions } = storeToRefs(useWishlistStore())
+    const selectListModalOpen = ref(false)
+
+    let resolve: ((value: unknown) => void) | null = null
+
+    function openDialog() {
+      selectListModalOpen.value = true
+
+      return new Promise((res) => {
+        resolve = res
+      })
+    }
 
     function handleUpdateValue(listId: number) {
-      emit('onListSelect', listId)
+      if (resolve) {
+        resolve(listId)
+
+        selectListModalOpen.value = false
+      }
     }
 
     return {
       wishlistSelectOptions,
       handleUpdateValue,
-      selectModal
+      selectListModalOpen
     }
   }
 })
