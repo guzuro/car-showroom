@@ -1,7 +1,16 @@
 <template>
-  <n-modal title="Add new wishlist" style="width: 600px" preset="card" class="wishlist-create-modal"
-    v-model:show="createModal">
-    <n-input v-model:value="listName" class="wishlist-create-modal__input" placeholder="List name..." />
+  <n-modal
+    title="Add new wishlist"
+    style="width: 600px"
+    preset="card"
+    class="wishlist-create-modal"
+    v-model:show="createModal"
+  >
+    <n-input
+      v-model:value="listName"
+      class="wishlist-create-modal__input"
+      placeholder="List name..."
+    />
     <div class="wishlist-create-modal__button-add">
       <n-button type="success" @click="addNewList"> Create </n-button>
     </div>
@@ -11,7 +20,7 @@
 <script lang="ts">
 import { NInput, NModal, NButton } from 'naive-ui'
 import { computed, defineComponent, toRefs, unref, ref } from 'vue'
-import { useWishlistStore } from '../stores/wishlistStore'
+import useWishlistsController from '../controllers/wishlists.controller'
 
 export default defineComponent({
   components: {
@@ -24,7 +33,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
-    const { createWishlist } = useWishlistStore()
+    const { createListHandler } = useWishlistsController()
 
     const { modelValue } = toRefs(props)
     const listName = ref('')
@@ -40,7 +49,7 @@ export default defineComponent({
 
     async function addNewList() {
       try {
-        await createWishlist(listName.value)
+        await createListHandler(listName.value)
         createModal.value = false
       } finally {
         listName.value = ''
