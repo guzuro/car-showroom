@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watchEffect } from 'vue'
+import { defineComponent, ref, watchEffect } from 'vue'
 import useCarsController from '../controllers/cars.controller'
 import ModelsList from '../components/CarModels/ModelsList.vue'
 import CarsList from '../components/CarsList/CarsList.vue'
@@ -27,12 +27,14 @@ export default defineComponent({
     const { replace } = useRouter()
 
     watchEffect(async () => {
-      const query = route.query
+      const { query, name } = route
 
-      if (query['make']) {
-        cars.value = await carsByModel({ limit: 10, ...query })
-      } else {
-        getRandomCars()
+      if (name === 'Catalog') {
+        if (query['make']) {
+          cars.value = await carsByModel({ limit: 10, ...query })
+        } else {
+          getRandomCars()
+        }
       }
     })
 
@@ -47,10 +49,6 @@ export default defineComponent({
     async function getRandomCars() {
       cars.value = await randomCars()
     }
-
-    onMounted(() => {
-      getRandomCars()
-    })
 
     return {
       getMake,
