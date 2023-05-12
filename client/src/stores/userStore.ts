@@ -1,18 +1,24 @@
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
+import type { User } from "../types/User.types"
 
 export const useUserStore = defineStore('user', () => {
-    const user = ref<any | null>(null)
+    const user = ref<User | null>(null)
 
     const userFullName = computed(() => {
-        if (user.value.firstName || user.value.lastName) {
-            return `${user.value.firstName || ''} ${user.value.lastName || ''}`
-        }
+        if (user.value) {
 
-        return user.value.email
+            if (user.value.firstName || user.value.lastName) {
+                return `${user.value.firstName || ''} ${user.value.lastName || ''}`
+            }
+
+            return user.value.email
+        } else {
+            return null
+        }
     })
 
-    function saveUser(payload: any) {
+    function saveUser(payload: User) {
         user.value = payload
     }
 

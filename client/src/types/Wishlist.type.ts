@@ -10,8 +10,7 @@ export type Wishlist = {
     updatedAt: string
 }
 
-export const enum WishlistAddFrontendActions {
-    NEED_AUTH,
-    WISHLIST_EMPTY,
-    SELECT_WISHLIST_TO_ADD
+
+export type WishlistApiRes = {
+    wishlist: Wishlist
 }

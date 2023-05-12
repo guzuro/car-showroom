@@ -1,9 +1,9 @@
-import type { Wishlist } from "../types/Wishlist.type"
+import type { Wishlist, WishlistApiRes } from "../types/Wishlist.type"
 import HttpClient from "./HttpClient"
+import type { BaseApiRes } from "./types/BaseApiRes"
 
-type CreateWishlistRes = {
-    message: string,
-    wishlist: Wishlist
+type CreateWishlistReq = Pick<Wishlist, "name"> & {
+    userId: number
 }
 
 class WishListsApi extends HttpClient {
@@ -11,17 +11,14 @@ class WishListsApi extends HttpClient {
         super()
     }
 
-    async getUserWishlists(body: any) {
-        return await this.post<Array<any>>('/wishlist/login', body)
+    async createWishlist(body: CreateWishlistReq) {
+        return await this.post<BaseApiRes<WishlistApiRes>>('/wishlist/create', body)
     }
 
-    async createWishlist(body: any) {
-        return await this.post<CreateWishlistRes>('/wishlist/create', body)
-    }
-
-    async deleteWishlist(body: any) {
-        return await this.delete<any>('/wishlist/delete', body)
-    }
+    //TODO 
+    // async deleteWishlist(body: any) {
+    //     return await this.delete<any>('/wishlist/delete', body)
+    // }
 }
 
 export default new WishListsApi()

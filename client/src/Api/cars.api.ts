@@ -10,7 +10,7 @@ class CarsApi extends HttpClient {
         return await this.get<Array<CarInfo>>('/randomCars')
     }
 
-    async carsByModel(body: any) {
+    async carsByModel(body: Record<string, string | number>) {
         return await this.get<Array<CarInfo>>('/carsbymodel', body)
     }
 }

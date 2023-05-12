@@ -49,7 +49,7 @@ export default function useWishlistsController() {
 
             open()
 
-            const { data }: any = await WishApi.addToWishList({
+            const { data } = await WishApi.addToWishList({
                 listId,
                 carModel: make,
                 carIndex: index,
@@ -68,7 +68,7 @@ export default function useWishlistsController() {
         open()
 
         try {
-            const { data }: any = await WishApi.removeFromWishList({ id }, { listId })
+            const { data } = await WishApi.removeFromWishList(id, { listId })
             success(data.message)
 
             replaceExistedWishlist(data.wishlist)
