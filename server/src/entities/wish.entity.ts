@@ -20,7 +20,11 @@ export class Wish {
     })
     listId!: number
 
-    @ManyToOne(() => WishList, (list) => list.items)
+    @ManyToOne(
+        () => WishList, (list) => list.items,
+        {
+            onDelete: "CASCADE"
+        })
     @JoinColumn({ name: 'list_id' })
     list?: WishList
 
