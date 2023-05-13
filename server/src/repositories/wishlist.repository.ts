@@ -24,6 +24,12 @@ export const getWishlistById = async ({ id }: GetWishListById) => {
     })
 }
 
+export const updateWishlist = async (updatedList: WishList) => {
+    return await wishlistRepository.save({
+        ...updatedList
+    })
+}
+
 export const getUserWishlists = async ({ userId }: GetUserWishlists) => {
     return await wishlistRepository.find({
         where: {

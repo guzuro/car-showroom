@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { User } from "./user.entity";
 import { Wish } from "./wish.entity";
+import { v4 as uuidv4 } from 'uuid';
 
 @Entity()
 export class WishList {
@@ -15,7 +16,7 @@ export class WishList {
     @Column({
         default: null
     })
-    shareLink!: string
+    shareKey!: string
 
     @Column({ name: 'user_id', select: false })
     userId!: number
@@ -42,4 +43,10 @@ export class WishList {
 
     @UpdateDateColumn()
     updatedAt!: Date
+
+    generateGuid() {
+        if (this.shareKey === null) {
+            this.shareKey = uuidv4()
+        }
+    }
 }
