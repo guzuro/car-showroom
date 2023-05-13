@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { NLayout, NLayoutHeader, NLayoutContent } from 'naive-ui'
-import LayoutHeader from '../components/LayoutHeader.vue'
+import LayoutHeader from '../components/Layout/LayoutHeader.vue'
 import { defineComponent, type CSSProperties } from 'vue'
 import { RouterView } from 'vue-router'
 

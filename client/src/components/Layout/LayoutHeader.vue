@@ -20,7 +20,7 @@
 import { defineComponent } from 'vue'
 import LayoutHeaderUser from './LayoutHeaderUser.vue'
 import LayoutHeaderWishes from './LayoutHeaderWishes.vue'
-import logo from '../assets/image/logo.svg'
+import logo from '../../assets/image/logo.svg'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({

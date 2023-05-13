@@ -21,10 +21,10 @@
 import { LogInFilled, PersonFilled } from '@vicons/material'
 import { NIcon } from 'naive-ui'
 import { defineComponent, ref } from 'vue'
-import { useUserStore } from '../stores/userStore'
+import { useUserStore } from '../../stores/userStore'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import AuthModal from './AuthModal.vue'
+import AuthModal from '../AuthModal.vue'
 
 export default defineComponent({
   components: {

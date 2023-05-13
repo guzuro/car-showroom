@@ -12,7 +12,7 @@
 import { FormatListBulletedFilled } from '@vicons/material'
 import { NBadge, NIcon } from 'naive-ui'
 import { defineComponent } from 'vue'
-import { useWishlistStore } from '../stores/wishlistStore'
+import { useWishlistStore } from '../../stores/wishlistStore'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 
