@@ -12,13 +12,23 @@
     <template #cover>
       <div class="cars-list-item__image">
         <n-icon
+          v-if="bookmarkIcon"
           :color="!isCarInList(car) ? warningColor : errorColor"
-          class="cars-list-item__bookmark"
-          :class="hoverClass"
+          class="cars-list-item__icon"
+          :class="bookmarkHoverClass"
           size="30"
           @click="onBookmarkClick"
         >
           <bookmark-filled />
+        </n-icon>
+        <n-icon
+          v-if="deleteIcon"
+          :color="errorColor"
+          class="cars-list-item__icon icon-delete"
+          size="30"
+          @click="onDeleteClick"
+        >
+          <delete-filled />
         </n-icon>
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKeSfXSGkhfHh3OrZ0LbggDGyT45sz1IRTzQJnzClJ&s"
@@ -31,7 +41,7 @@
 <script lang="ts">
 import { computed, defineComponent, type PropType } from 'vue'
 import { NCard } from 'naive-ui'
-import { BookmarkFilled } from '@vicons/material'
+import { BookmarkFilled, DeleteFilled } from '@vicons/material'
 import { NIcon } from 'naive-ui'
 import { useThemeVars } from 'naive-ui'
 import type { CarInfo } from '../../types/CarInfo.type'
@@ -41,28 +51,41 @@ export default defineComponent({
   components: {
     NCard,
     BookmarkFilled,
+    DeleteFilled,
     NIcon
   },
   props: {
     car: {
       type: Object as PropType<CarInfo>,
       required: true
+    },
+    bookmarkIcon: {
+      type: Boolean,
+      default: false
+    },
+    deleteIcon: {
+      type: Boolean,
+      default: false
     }
   },
-  emits: ['bookmarkClick'],
+  emits: ['bookmarkClick', 'deleteClick'],
   setup(props, { emit }) {
     const theme = useThemeVars()
     const { isCarInList } = useWishlistStore()
     const { warningColor, warningColorHover, errorColor, errorColorHover } = theme.value
 
-    const hoverClass = computed(() => {
+    const bookmarkHoverClass = computed(() => {
       return isCarInList(props.car)
-        ? 'cars-list-item__bookmark-in-list'
-        : 'cars-list-item__bookmark-not-in-list'
+        ? 'cars-list-item__icon-in-list'
+        : 'cars-list-item__icon-not-in-list'
     })
 
     function onBookmarkClick() {
       emit('bookmarkClick', props.car)
+    }
+
+    function onDeleteClick() {
+      emit('deleteClick')
     }
 
     return {
@@ -71,8 +94,9 @@ export default defineComponent({
       warningColorHover,
       errorColorHover,
       onBookmarkClick,
+      onDeleteClick,
       isCarInList,
-      hoverClass
+      bookmarkHoverClass
     }
   }
 })
@@ -84,7 +108,7 @@ export default defineComponent({
     position: relative;
   }
 
-  &__bookmark {
+  &__icon {
     position: absolute;
     top: 0;
     right: 0;
@@ -100,6 +124,12 @@ export default defineComponent({
       &:hover svg {
         color: v-bind(errorColorHover) !important;
       }
+    }
+  }
+
+  .icon-delete {
+    &:hover {
+      color: v-bind(errorColorHover) !important;
     }
   }
 

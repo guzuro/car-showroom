@@ -15,10 +15,9 @@ class WishListsApi extends HttpClient {
         return await this.post<BaseApiRes<WishlistApiRes>>('/wishlist/create', body)
     }
 
-    //TODO 
-    // async deleteWishlist(body: any) {
-    //     return await this.delete<any>('/wishlist/delete', body)
-    // }
+    async deleteWishlist(id: Pick<Wishlist, "id">) {
+        return await this.delete<BaseApiRes>(`/wishlist/delete/${id}`)
+    }
 }
 
 export default new WishListsApi()
