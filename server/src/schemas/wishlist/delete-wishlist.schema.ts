@@ -1,7 +1,7 @@
-import { body } from "express-validator";
+import { param } from "express-validator";
 
 export const deleteWishlistSchema = [
-    body('id')
+    param('id')
         .exists()
         .withMessage('"id" field required')
         .isInt()

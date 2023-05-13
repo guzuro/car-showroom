@@ -21,10 +21,10 @@ export const createListHandler = async (req: Request, res: Response, next: NextF
 
 
 export const removeListHandler = async (req: Request, res: Response, next: NextFunction) => {
+    const id = Number.parseInt(req.params.id)
+
     try {
-        await deleteWishlist({
-            id: req.body.wishlistId
-        })
+        await deleteWishlist({ id })
 
         res
             .status(200)
