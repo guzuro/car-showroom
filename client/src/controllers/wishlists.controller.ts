@@ -18,7 +18,7 @@ export default function useWishlistsController() {
             open()
 
             const { data } = await WishListsApi.createWishlist({
-                userId: userStore.user.id,
+                userId: userStore.user!.id,
                 name
             })
 
@@ -45,7 +45,7 @@ export default function useWishlistsController() {
 
     async function addToWishListHandler(listId: number, car: CarInfo) {
         try {
-            const { index, make, ...otherFields } = car
+            const { index, make } = car
 
             open()
 
@@ -53,7 +53,7 @@ export default function useWishlistsController() {
                 listId,
                 carModel: make,
                 carIndex: index,
-                carInfo: otherFields
+                carInfo: car
             })
 
             success(data.message)

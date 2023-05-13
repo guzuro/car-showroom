@@ -5,5 +5,5 @@ export type Wish = {
     id: number
     carModel: CarModel
     carIndex: number
-    carInfo: Omit<CarInfo, "make" | "index">
+    carInfo: CarInfo
 }
