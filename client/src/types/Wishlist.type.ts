@@ -4,7 +4,7 @@ export type Wishlist = {
     id: number,
     name: string
     isDefault: boolean
-    shareLink: string | null
+    shareKey: string | null
     items: Array<Wish>
     createdAt: string,
     updatedAt: string

@@ -32,6 +32,10 @@ export const useWishlistStore = defineStore('wishlists', () => {
         wishes.value.splice(idx, 1, newList)
     }
 
+    function removeList(id: number) {
+        wishes.value = wishes.value.filter(w => w.id !== id)
+    }
+
     function isCarInList(car: CarInfo) {
         const checkCallback = (wishItem: Wish) =>
             wishItem.carIndex === car.index && wishItem.carModel === car.make
@@ -53,6 +57,7 @@ export const useWishlistStore = defineStore('wishlists', () => {
         addToWishes,
         firstListIfLengthOne,
         defaultList,
-        replaceExistedWishlist
+        replaceExistedWishlist,
+        removeList
     }
 })

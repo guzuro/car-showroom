@@ -15,8 +15,12 @@ class WishListsApi extends HttpClient {
         return await this.post<BaseApiRes<WishlistApiRes>>('/wishlist/create', body)
     }
 
-    async deleteWishlist(id: Pick<Wishlist, "id">) {
+    async deleteWishlist(id: number) {
         return await this.delete<BaseApiRes>(`/wishlist/delete/${id}`)
+    }
+
+    async generateShareKey(body: Pick<Wishlist, "id">) {
+        return await this.post<BaseApiRes<WishlistApiRes>>('/wishlist/generateShareKey', body)
     }
 }
 

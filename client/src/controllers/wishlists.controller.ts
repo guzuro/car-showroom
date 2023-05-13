@@ -11,7 +11,7 @@ export default function useWishlistsController() {
     const { success } = useNotification()
 
     const userStore = useUserStore()
-    const { addToWishes, replaceExistedWishlist } = useWishlistStore()
+    const { addToWishes, replaceExistedWishlist, removeList } = useWishlistStore()
 
     async function createListHandler(name: string) {
         try {
@@ -30,13 +30,14 @@ export default function useWishlistsController() {
         }
     }
 
-    async function removeListHandler() {
+    async function removeListHandler(id: number) {
         try {
             open()
 
-            // const { data } = await CarsApi.randomCars()
+            const { data } = await WishListsApi.deleteWishlist(id)
 
-            // return data
+            success(data.message)
+            removeList(id)
         } finally {
             close()
         }
@@ -77,8 +78,23 @@ export default function useWishlistsController() {
         }
     }
 
+    async function generateShareKey(id: number) {
+        open()
+
+        try {
+            const { data } = await WishListsApi.generateShareKey({ id })
+            success(data.message)
+
+            replaceExistedWishlist(data.wishlist)
+        } finally {
+            close()
+        }
+    }
+
+
     return {
         createListHandler,
+        generateShareKey,
         removeListHandler,
         addToWishListHandler,
         deleteFromWishlistHandler
