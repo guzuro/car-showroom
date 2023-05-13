@@ -5,12 +5,11 @@
  - Registration/login to the account;
  - Viewing a list of cars;
  - Filter the list by:
- -- model;
- -- transmission type;
- -- fuel type;
- --  year of release;
- -- type of transmission.
- - Search car by brand;
+ 	- model;
+ 	- transmission type;
+ 	- fuel type;
+ 	- year of release;
+ 	- type of transmission;
  - View the main characteristics of a car of a specific model and brand;
  - Add cars to the wishlist - share, watch it other users if you have an account.
 
@@ -23,4 +22,3 @@
 **Backend:**
  - [x] NodeJS, Express
  - [x] Postgres, TypeORM
-
