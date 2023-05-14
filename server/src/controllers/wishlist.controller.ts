@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import HttpException from "../exceptions/HttpException";
 import TypeOrmException from "../exceptions/TypeOrmException";
-import { createWishlist, deleteWishlist, getUserWishlists, getWishlistById, updateWishlist } from "../repositories/wishlist.repository";
+import { createWishlist, deleteWishlist, getUserWishlists, getWishlistById, getWishlistByShareKey, updateWishlist } from "../repositories/wishlist.repository";
+import { getUserById } from "../repositories/user.repository";
 
 export const createListHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -13,7 +14,7 @@ export const createListHandler = async (req: Request, res: Response, next: NextF
             .status(200)
             .send({
                 message: 'Wishlist created!',
-                wishlist,
+                wishlist: wishlist.omitUserId(),
             })
     } catch (error: any) {
         next(new TypeOrmException(error))
@@ -59,7 +60,7 @@ export const generateShareKeyHandler = async (req: Request, res: Response, next:
                 .status(200)
                 .send({
                     message: 'Wishlist updated!',
-                    wishlist: updatedList
+                    wishlist: updatedList.omitUserId()
                 })
         } else {
             next(new HttpException(404, "Wishlist not found!"))
@@ -70,4 +71,33 @@ export const generateShareKeyHandler = async (req: Request, res: Response, next:
         next(new TypeOrmException(error))
     }
 }
+
+
+export const getSharedListHandler = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const shareKey = req.params.id
+
+        const list = await getWishlistByShareKey(shareKey)
+
+        if (list) {
+            const user = await getUserById(list.userId)
+
+            if (user) {
+                res
+                    .status(200)
+                    .send({
+                        userInfo: user.omitPassword(),
+                        wishlist: list.omitUserId()
+                    })
+            } else {
+                next(new HttpException(404, "User not found!"))
+            }
+        } else {
+            next(new HttpException(404, "Wishlist not found!"))
+        }
+    } catch (error: any) {
+        next(new TypeOrmException(error))
+    }
+}
+
 

@@ -3,6 +3,7 @@ import { CreateWishlistDto } from "../dto/Wishlist/create-wishlist.dto";
 import { DeleteWishlistDto } from "../dto/Wishlist/delete-wishlist.dto";
 import { GetUserWishlists } from "../dto/Wishlist/get-user-wishlists.dto";
 import { GetWishListById } from "../dto/Wishlist/get-wishlist-by-id.dto";
+import { GetWishListByShareKeyDto } from "../dto/Wishlist/get-wishlist-by-sharekey.dto.";
 import { WishList } from "../entities/wishlist.entity";
 
 const wishlistRepository = AppDataSource.getRepository(WishList);
@@ -19,6 +20,15 @@ export const getWishlistById = async ({ id }: GetWishListById) => {
     return await wishlistRepository.findOne({
         where: {
             id
+        },
+        relations: ['items']
+    })
+}
+
+export const getWishlistByShareKey = async (shareKey: GetWishListByShareKeyDto) => {
+    return await wishlistRepository.findOne({
+        where: {
+            shareKey
         },
         relations: ['items']
     })
@@ -42,3 +52,16 @@ export const getUserWishlists = async ({ userId }: GetUserWishlists) => {
         }
     })
 }
+
+// export const setWishlistAsDefault = async ({ userId }: GetUserWishlists) => {
+//     return await wishlistRepository.find({
+//         where: {
+//             userId
+//         },
+//         relations: ['items'],
+//         order: {
+//             createdAt: "DESC",
+//             updatedAt: "DESC"
+//         }
+//     })
+// }

@@ -18,7 +18,7 @@ export class WishList {
     })
     shareKey!: string
 
-    @Column({ name: 'user_id', select: false })
+    @Column({ name: 'user_id' })
     userId!: number
 
     @ManyToOne(
@@ -48,5 +48,11 @@ export class WishList {
         if (this.shareKey === null) {
             this.shareKey = uuidv4()
         }
+    }
+
+    omitUserId() {
+        const { userId, ...fields } = this
+
+        return fields
     }
 }
