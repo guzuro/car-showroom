@@ -7,7 +7,7 @@ const { success } = useNotification()
 
 export function prepareShareLink(shareKey: string) {
     const origin = window.location.origin
-    const routeName = '/list-share/'
+    const routeName = '/shared/'
 
     const link = origin + routeName + shareKey
 

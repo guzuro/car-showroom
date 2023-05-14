@@ -91,13 +91,25 @@ export default function useWishlistsController() {
         }
     }
 
+    async function getSharedWishlist(shareKey: string) {
+        open()
+
+        try {
+            const { data } = await WishListsApi.getSharedWishlist(shareKey)
+
+            return data
+        } finally {
+            close()
+        }
+    }
+
 
     return {
         createListHandler,
         generateShareKey,
         removeListHandler,
         addToWishListHandler,
-        deleteFromWishlistHandler
-
+        deleteFromWishlistHandler,
+        getSharedWishlist
     }
 }

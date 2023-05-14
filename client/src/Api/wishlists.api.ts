@@ -1,4 +1,4 @@
-import type { Wishlist, WishlistApiRes } from "../types/Wishlist.type"
+import type { SharedWishlistRes, Wishlist, WishlistApiRes } from "../types/Wishlist.type"
 import HttpClient from "./HttpClient"
 import type { BaseApiRes } from "./types/BaseApiRes"
 
@@ -21,6 +21,10 @@ class WishListsApi extends HttpClient {
 
     async generateShareKey(body: Pick<Wishlist, "id">) {
         return await this.post<BaseApiRes<WishlistApiRes>>('/wishlist/generateShareKey', body)
+    }
+
+    async getSharedWishlist(shareKey: Wishlist["shareKey"]) {
+        return await this.get<SharedWishlistRes>(`/wishlist/shared/${shareKey}`)
     }
 }
 
