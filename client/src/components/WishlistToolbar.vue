@@ -8,7 +8,7 @@
             class="wishlist-toolbar__link"
             :color="primaryColor"
             :size="30"
-            @click="prepareLink"
+            @click="prepareShareLink(list.shareKey)"
           >
             <link-filled />
           </n-icon>
@@ -34,8 +34,7 @@ import type { Wishlist } from '../types/Wishlist.type'
 import useWishlistsController from '../controllers/wishlists.controller'
 import { NButton, NIcon, NPageHeader, NSpace, useThemeVars } from 'naive-ui'
 import { LinkFilled } from '@vicons/material'
-import { useClipboard } from '@vueuse/core'
-import { useNotification } from '../composables/useNotification'
+import { prepareShareLink } from '../utils/prepareShareLink'
 
 export default defineComponent({
   components: {
@@ -55,29 +54,16 @@ export default defineComponent({
     const { removeListHandler, generateShareKey } = useWishlistsController()
     const theme = useThemeVars()
     const { primaryColor } = theme.value
-    const { copy } = useClipboard()
-    const { success } = useNotification()
 
     function generateShareLink() {
       generateShareKey(props.list.id)
-    }
-
-    function prepareLink() {
-      const origin = window.location.origin
-      const routeName = '/list-share/'
-      const shareKey = props.list.shareKey
-
-      const link = origin + routeName + shareKey
-
-      copy(link)
-      success('Copued')
     }
 
     return {
       removeListHandler,
       generateShareLink,
       primaryColor,
-      prepareLink
+      prepareShareLink
     }
   }
 })
