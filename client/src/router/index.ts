@@ -32,6 +32,14 @@ const router = createRouter({
         path: '/lists',
         component: () => import('../views/users-wishlists.vue'),
       },
+      {
+        name: "SharedList",
+        path: '/shared-list/:shareKey',
+        component: () => import('../views/shared-wishlist.vue'),
+      },
+
+
+
     ]
   },
   {
