@@ -16,11 +16,7 @@
           </template>
           Add new
         </n-button>
-        <wish-list-names
-          v-if="screen.s"
-          class="users-wishlists__list"
-          @on-list-select="activeListId = $event"
-        />
+        <wish-list-names v-if="screen.s" @on-list-select="activeListId = $event" />
 
         <n-dropdown
           v-if="!screen.s"
@@ -134,11 +130,6 @@ export default defineComponent({
   &__add-btn {
     width: 100%;
     margin-bottom: 10px;
-  }
-
-  &__list {
-    overflow-y: auto;
-    // max-height: 350px;
   }
 }
 </style>
