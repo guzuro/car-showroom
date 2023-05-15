@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '../stores/userStore'
+import { useNotification } from '../composables/useNotification'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,6 +33,9 @@ const router = createRouter({
         name: "UsersWishes",
         path: '/lists',
         component: () => import('../views/users-wishlists.vue'),
+        meta: {
+          needAuth: true
+        }
       },
       {
         name: "SharedList",
@@ -52,3 +57,19 @@ const router = createRouter({
 })
 
 export default router
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.needAuth) {
+    const { user } = useUserStore()
+    const { error } = useNotification()
+
+    if (user !== null) {
+      next()
+    } else {
+      error("Sign in to account!")
+      next({ name: "Catalog" })
+    }
+  }
+
+  next()
+})
