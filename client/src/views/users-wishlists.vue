@@ -3,7 +3,7 @@
     <wishlist-create-modal v-model="wishlistCreateModalOpen" />
 
     <n-grid :x-gap="12" :y-gap="12" item-responsive responsive="screen">
-      <n-grid-item span="24 m:5">
+      <n-grid-item span="24 s:7">
         <n-button
           type="primary"
           class="users-wishlists__add-btn"
@@ -24,18 +24,23 @@
 
         <n-dropdown
           v-if="!screen.s"
-          class="users-wishlists__list"
           trigger="click"
-          :options="options"
+          :options="wishlistSelectOptions"
+          key-field="value"
           @select="activeListId = $event"
         >
-          <n-icon>
-            <menu-round />
-          </n-icon>
+          <n-button>
+            <template #icon>
+              <n-icon>
+                <menu-round />
+              </n-icon>
+            </template>
+            Show
+          </n-button>
         </n-dropdown>
       </n-grid-item>
 
-      <n-grid-item span="24 m:19">
+      <n-grid-item span="24 s:17">
         <template v-if="activeListId && activeWishlist">
           <wishlist-toolbar :list="activeWishlist" />
 
@@ -73,6 +78,7 @@ import WishlistToolbar from '../components/WishlistToolbar.vue'
 import { MenuRound, PlusFilled } from '@vicons/material'
 import { useMediaBreakpoints } from '../composables/useMediaBreakpoints'
 import WishlistCreateModal from '../components/WishlistCreateModal.vue'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   components: {
@@ -92,6 +98,7 @@ export default defineComponent({
   setup() {
     const { deleteFromWishlistHandler } = useWishlistsController()
     const store = useWishlistStore()
+    const { wishlistSelectOptions } = storeToRefs(store)
     const activeListId = ref<null | number>(null)
     const { screen } = useMediaBreakpoints()
     const wishlistCreateModalOpen = ref(false)
@@ -104,13 +111,6 @@ export default defineComponent({
       return null
     })
 
-    const options = computed(() => {
-      return store.wishlistSelectOptions.map((o) => ({
-        key: o.value,
-        label: o.label
-      }))
-    })
-
     function handleDeleteClick(itemId: number) {
       if (activeListId.value) {
         deleteFromWishlistHandler(activeListId.value, itemId)
@@ -121,7 +121,7 @@ export default defineComponent({
       activeListId,
       handleDeleteClick,
       activeWishlist,
-      options,
+      wishlistSelectOptions,
       screen,
       wishlistCreateModalOpen
     }
@@ -136,9 +136,9 @@ export default defineComponent({
     margin-bottom: 10px;
   }
 
-  // &__list {
-  //   overflow-y: auto;
-  //   max-height: 450px;
-  // }
+  &__list {
+    overflow-y: auto;
+    // max-height: 350px;
+  }
 }
 </style>
