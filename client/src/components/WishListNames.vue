@@ -1,19 +1,5 @@
 <template>
   <n-list class="wish-list-names" hoverable clickable>
-    <wishlist-create-modal v-model="wishlistCreateModalOpen" />
-    <n-button
-      type="primary"
-      class="wish-list-names__add-btn"
-      @click="wishlistCreateModalOpen = true"
-    >
-      <template #icon>
-        <n-icon>
-          <plus-filled />
-        </n-icon>
-      </template>
-      Add new
-    </n-button>
-
     <template v-if="wishes.length">
       <n-list-item
         v-for="list in wishes"
@@ -41,11 +27,11 @@ export default defineComponent({
   components: {
     NList,
     NListItem,
-    WishlistCreateModal,
-    NThing,
-    NButton,
-    NIcon,
-    PlusFilled
+    // WishlistCreateModal,
+    NThing
+    // NButton,
+    // NIcon,
+    // PlusFilled
   },
   emits: ['onListSelect'],
   setup(props, { emit }) {
@@ -87,11 +73,6 @@ export default defineComponent({
     &-active {
       border: 1px v-bind(primaryColor) solid;
     }
-  }
-
-  &__add-btn {
-    width: 100%;
-    margin-bottom: 10px;
   }
 }
 </style>
