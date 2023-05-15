@@ -1,20 +1,22 @@
 import { Request, Response, NextFunction } from "express";
 import HttpException from "../exceptions/HttpException";
 import TypeOrmException from "../exceptions/TypeOrmException";
-import { createWishlist, deleteWishlist, getUserWishlists, getWishlistById, getWishlistByShareKey, updateWishlist } from "../repositories/wishlist.repository";
+import { createWishlist, deleteWishlist, getWishlistById, getWishlistByShareKey, updateWishlist } from "../repositories/wishlist.repository";
 import { getUserById } from "../repositories/user.repository";
 
 export const createListHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const wishlist = await createWishlist({
+        const savedList = await createWishlist({
             ...req.body
         })
+
+        const listEntity = await getWishlistById({ id: savedList.id })
 
         res
             .status(200)
             .send({
                 message: 'Wishlist created!',
-                wishlist: wishlist.omitUserId(),
+                wishlist: listEntity!.omitUserId(),
             })
     } catch (error: any) {
         next(new TypeOrmException(error))
@@ -49,12 +51,7 @@ export const generateShareKeyHandler = async (req: Request, res: Response, next:
         if (list) {
             list.generateGuid()
 
-            const { id, shareKey } = list
-
             const updatedList = await updateWishlist(list)
-
-            console.log(updatedList, 'updatedList');
-
 
             res
                 .status(200)
