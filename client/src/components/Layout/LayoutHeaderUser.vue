@@ -1,13 +1,15 @@
 <template>
   <div class="layout-user-header">
     <div class="layout-user-header__user" v-if="user">
-      {{ userFullName }}
+      <template v-if="screen.m">
+        {{ userFullName }}
+      </template>
       <n-icon :size="30">
         <person-filled />
       </n-icon>
     </div>
     <div v-else class="layout-user-header__auth" @click="authModalOpen = true">
-      Sign in
+      <template v-if="screen.m"> Sign in </template>
       <n-icon :size="30">
         <log-in-filled />
       </n-icon>
@@ -25,6 +27,7 @@ import { useUserStore } from '../../stores/userStore'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import AuthModal from '../AuthModal.vue'
+import { useMediaBreakpoints } from '../../composables/useMediaBreakpoints'
 
 export default defineComponent({
   components: {
@@ -39,6 +42,8 @@ export default defineComponent({
 
     const { push } = useRouter()
 
+    const { screen } = useMediaBreakpoints()
+
     const authModalOpen = ref(false)
 
     function gotoAuthPage() {
@@ -51,7 +56,8 @@ export default defineComponent({
       user,
       userFullName,
       gotoAuthPage,
-      authModalOpen
+      authModalOpen,
+      screen
     }
   }
 })
