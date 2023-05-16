@@ -113,6 +113,7 @@ export default defineComponent({
     top: 0;
     right: 0;
     cursor: pointer;
+    z-index: 2;
 
     &-not-in-list {
       &:hover svg {
