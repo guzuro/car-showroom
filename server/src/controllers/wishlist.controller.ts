@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import HttpException from "../exceptions/HttpException";
 import TypeOrmException from "../exceptions/TypeOrmException";
-import { createWishlist, deleteWishlist, getWishlistById, getWishlistByShareKey, updateWishlist } from "../repositories/wishlist.repository";
+import { createWishlist, deleteWishlist, getUserWishlists, getWishlistById, getWishlistByShareKey, setWishlistAsDefault, updateWishlist } from "../repositories/wishlist.repository";
 import { getUserById } from "../repositories/user.repository";
 
 export const createListHandler = async (req: Request, res: Response, next: NextFunction) => {
@@ -97,4 +97,26 @@ export const getSharedListHandler = async (req: Request, res: Response, next: Ne
     }
 }
 
+export const toggleWishlistDefault = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await setWishlistAsDefault({
+            ...req.body
+        })
 
+        if (result) {
+            const wishlists = await getUserWishlists({ userId: result.userId })
+
+            res
+                .status(200)
+                .send({
+                    message: 'Wishlist updated!',
+                    wishlists
+                })
+
+        } else {
+            next(new HttpException(404, "Wishlist not found!"))
+        }
+    } catch (error: any) {
+        next(new TypeOrmException(error))
+    }
+}

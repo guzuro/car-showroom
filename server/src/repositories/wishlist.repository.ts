@@ -1,9 +1,11 @@
+import { Not } from "typeorm";
 import { AppDataSource } from "../config/data-source";
 import { CreateWishlistDto } from "../dto/Wishlist/create-wishlist.dto";
 import { DeleteWishlistDto } from "../dto/Wishlist/delete-wishlist.dto";
 import { GetUserWishlists } from "../dto/Wishlist/get-user-wishlists.dto";
 import { GetWishListById } from "../dto/Wishlist/get-wishlist-by-id.dto";
 import { GetWishListByShareKeyDto } from "../dto/Wishlist/get-wishlist-by-sharekey.dto.";
+import { UpdateListDefaultDto } from "../dto/Wishlist/update-list-default.dto.";
 import { WishList } from "../entities/wishlist.entity";
 
 const wishlistRepository = AppDataSource.getRepository(WishList);
@@ -53,15 +55,34 @@ export const getUserWishlists = async ({ userId }: GetUserWishlists) => {
     })
 }
 
-// export const setWishlistAsDefault = async ({ userId }: GetUserWishlists) => {
-//     return await wishlistRepository.find({
-//         where: {
-//             userId
-//         },
-//         relations: ['items'],
-//         order: {
-//             createdAt: "DESC",
-//             updatedAt: "DESC"
-//         }
-//     })
-// }
+export const setWishlistAsDefault = async ({ id }: UpdateListDefaultDto) => {
+
+    return wishlistRepository.manager.transaction(async (manager) => {
+        const list = await manager.findOneBy(WishList, { id })
+
+        if (list) {
+
+            if (!list.isDefault) {
+                list.isDefault = true
+                const updatedList = await manager.save(WishList, list)
+
+                await manager.createQueryBuilder()
+                    .update(WishList)
+                    .set({ isDefault: false })
+                    .where({
+                        userId: list.userId,
+                        id: Not(list.id)
+                    })
+                    .execute()
+
+                return updatedList
+            } else {
+                list.isDefault = false
+                return await manager.save(WishList, list)
+            }
+        } else {
+            return null
+        }
+    })
+
+}
