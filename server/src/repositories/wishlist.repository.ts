@@ -47,11 +47,11 @@ export const getUserWishlists = async ({ userId }: GetUserWishlists) => {
         where: {
             userId
         },
-        relations: ['items'],
         order: {
-            createdAt: "DESC",
-            updatedAt: "DESC"
-        }
+            isDefault: "DESC",
+            createdAt: "DESC"
+        },
+        relations: ['items'],
     })
 }
 
