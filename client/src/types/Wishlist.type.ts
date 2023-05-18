@@ -16,6 +16,11 @@ export type WishlistApiRes = {
     wishlist: Wishlist
 }
 
+export type WishlistsApiRes = {
+    wishlists: Array<Wishlist>
+}
+
+
 
 export type SharedWishlistRes = {
     userInfo: User,

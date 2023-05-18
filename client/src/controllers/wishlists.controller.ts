@@ -11,7 +11,7 @@ export default function useWishlistsController() {
     const { success } = useNotification()
 
     const userStore = useUserStore()
-    const { addToWishes, replaceExistedWishlist, removeList } = useWishlistStore()
+    const { addToWishes, replaceExistedWishlist, removeList, setWishesToStore } = useWishlistStore()
 
     async function createListHandler(name: string) {
         try {
@@ -103,6 +103,20 @@ export default function useWishlistsController() {
         }
     }
 
+    async function toggleWishlistDefault(id: number) {
+        open()
+
+        try {
+            const { data } = await WishListsApi.toggleIsDefault({ id })
+
+            success(data.message)
+
+            setWishesToStore(data.wishlists)
+        } finally {
+            close()
+        }
+    }
+
 
     return {
         createListHandler,
@@ -110,6 +124,7 @@ export default function useWishlistsController() {
         removeListHandler,
         addToWishListHandler,
         deleteFromWishlistHandler,
-        getSharedWishlist
+        getSharedWishlist,
+        toggleWishlistDefault
     }
 }

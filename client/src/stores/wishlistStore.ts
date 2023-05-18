@@ -7,6 +7,11 @@ import type { Wishlist } from "../types/Wishlist.type"
 export const useWishlistStore = defineStore('wishlists', () => {
     const wishes = ref<Array<Wishlist>>([])
 
+    const sortedWishes = computed(() => {
+        return wishes.value
+            .sort((a, b) => b.items.length - a.items.length)
+    })
+
     const firstListIfLengthOne = computed(() => {
         if (wishes.value.length === 1) return wishes.value[0]
         return false
@@ -23,7 +28,7 @@ export const useWishlistStore = defineStore('wishlists', () => {
     }
 
     const wishlistSelectOptions = computed(() => {
-        return wishes.value.map(w => ({ label: w.name, value: w.id }))
+        return sortedWishes.value.map(w => ({ label: w.name, value: w.id }))
     })
 
     function replaceExistedWishlist(newList: Wishlist) {
@@ -58,6 +63,7 @@ export const useWishlistStore = defineStore('wishlists', () => {
         firstListIfLengthOne,
         defaultList,
         replaceExistedWishlist,
-        removeList
+        removeList,
+        sortedWishes
     }
 })

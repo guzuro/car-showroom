@@ -1,45 +1,56 @@
 <template>
   <n-list class="wish-list-names" hoverable clickable>
-    <template v-if="wishes.length">
+    <template v-if="sortedWishes.length">
       <n-list-item
-        v-for="list in wishes"
+        v-for="list in sortedWishes"
         :key="list.id"
         class="wish-list-names__item"
         :class="{ 'wish-list-names__item-active': list.id === selectedListId }"
         @click="selectList(list)"
       >
-        <n-thing :title="list.name" />
+        <n-thing :title="list.name">
+          <template #header-extra>
+            <template v-if="list.isDefault">
+              <n-icon :color="errorColor" :size="30">
+                <star-filled />
+              </n-icon>
+            </template>
+            <template v-if="list.shareKey">
+              <n-icon :color="primaryColor" :size="30">
+                <link-filled />
+              </n-icon>
+            </template>
+          </template>
+        </n-thing>
       </n-list-item>
     </template>
   </n-list>
 </template>
 
 <script lang="ts">
-import { NButton, NIcon, NList, NListItem, NThing, useThemeVars } from 'naive-ui'
+import { NIcon, NList, NListItem, NThing, useThemeVars } from 'naive-ui'
 import { defineComponent, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useWishlistStore } from '../stores/wishlistStore'
 import type { Wishlist } from '../types/Wishlist.type'
-import WishlistCreateModal from '../components/WishlistCreateModal.vue'
-import { PlusFilled } from '@vicons/material'
+import { StarFilled, LinkFilled } from '@vicons/material'
 
 export default defineComponent({
   components: {
     NList,
     NListItem,
-    // WishlistCreateModal,
-    NThing
-    // NButton,
-    // NIcon,
-    // PlusFilled
+    NThing,
+    NIcon,
+    StarFilled,
+    LinkFilled
   },
   emits: ['onListSelect'],
   setup(props, { emit }) {
     const state = useWishlistStore()
-    const { wishes } = storeToRefs(state)
+    const { sortedWishes } = storeToRefs(state)
 
     const theme = useThemeVars()
-    const { primaryColor } = theme.value
+    const { primaryColor, errorColor } = theme.value
 
     const selectedListId = ref<number | null>(null)
     const wishlistCreateModalOpen = ref(false)
@@ -55,10 +66,11 @@ export default defineComponent({
     }
 
     return {
-      wishes,
+      sortedWishes,
       selectList,
       selectedListId,
       primaryColor,
+      errorColor,
       wishlistCreateModalOpen
     }
   }

@@ -18,6 +18,7 @@
 
       <template #extra>
         <n-space>
+          <n-button @click="toggleDefault"> {{ defaultToggleButtonTitle }} </n-button>
           <n-button v-if="!list.shareKey" type="success" @click="generateShareLink">
             Generate link
           </n-button>
@@ -29,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue'
+import { computed, defineComponent, type PropType } from 'vue'
 import type { Wishlist } from '../types/Wishlist.type'
 import useWishlistsController from '../controllers/wishlists.controller'
 import { NButton, NIcon, NPageHeader, NSpace, useThemeVars } from 'naive-ui'
@@ -51,19 +52,33 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { removeListHandler, generateShareKey } = useWishlistsController()
+    const { removeListHandler, generateShareKey, toggleWishlistDefault } = useWishlistsController()
     const theme = useThemeVars()
     const { primaryColor } = theme.value
 
+    const defaultToggleButtonTitle = computed(() => {
+      if (props.list.isDefault) {
+        return 'Unset default'
+      } else {
+        return 'Make default'
+      }
+    })
+
     function generateShareLink() {
       generateShareKey(props.list.id)
+    }
+
+    function toggleDefault() {
+      toggleWishlistDefault(props.list.id)
     }
 
     return {
       removeListHandler,
       generateShareLink,
       primaryColor,
-      prepareShareLink
+      prepareShareLink,
+      toggleDefault,
+      defaultToggleButtonTitle
     }
   }
 })
