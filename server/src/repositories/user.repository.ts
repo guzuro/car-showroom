@@ -1,6 +1,5 @@
 import { AppDataSource } from "../config/data-source";
 import { CreateUserDto } from "../dto/User/create-user.dto";
-import { LoginUserDto } from "../dto/User/login-user.dto";
 import { User } from "../entities/user.entity";
 
 const userRepository = AppDataSource.getRepository(User);
@@ -14,6 +13,14 @@ export const getUserByLogin = async (login: string) => {
         where: {
             login
         },
-        relations: ['wishes', 'wishes.items']
+        relations: ['wishes', 'wishes.items'],
+    })
+}
+
+export const getUserById = async (id: number) => {
+    return await userRepository.findOne({
+        where: {
+            id
+        },
     })
 }
