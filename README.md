@@ -8,8 +8,7 @@
  	- model;
  	- transmission type;
  	- fuel type;
- 	- year of release;
- 	- type of transmission;
+ 	- year of release. 
  - View the main characteristics of a car of a specific model and brand;
  - Add cars to the wishlist - share, watch it other users if you have an account.
 
