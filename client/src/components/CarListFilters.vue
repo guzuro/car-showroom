@@ -1,13 +1,13 @@
 <template>
   <div class="carlist-filters">
-    <n-button :style="buttonStyles" @click="active = true">
+    <n-button type="primary" :dashed="hasActiveFilters" @click="active = true">
       <template #icon>
         <n-icon>
           <FilterAltFilled />
         </n-icon>
       </template>
 
-      Фильтры
+      Filters ({{ activeFiltersCount }})
     </n-button>
 
     <n-drawer
@@ -28,11 +28,21 @@
               @change="onTransmissionChange"
             />
           </n-thing>
-          <n-thing clearable title="Fuel type" content-indented>
-            <n-select v-model:value="fuel" :options="fuelTypeOptions" @change="onFuelChange" />
+          <n-thing title="Fuel type" content-indented>
+            <n-select
+              clearable
+              v-model:value="fuel"
+              :options="fuelTypeOptions"
+              @change="onFuelChange"
+            />
           </n-thing>
-          <n-thing clearable title="Year" content-indented>
-            <n-select v-model:value="year" :options="yearOptions" @change="onYearChange" />
+          <n-thing title="Year" content-indented>
+            <n-select
+              clearable
+              v-model:value="year"
+              :options="yearOptions"
+              @change="onYearChange"
+            />
           </n-thing>
         </n-space>
       </n-drawer-content>
@@ -42,16 +52,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import {
-  NButton,
-  NDrawer,
-  NDrawerContent,
-  NIcon,
-  NSelect,
-  NSpace,
-  NThing,
-  useThemeVars
-} from 'naive-ui'
+import { NButton, NDrawer, NDrawerContent, NIcon, NSelect, NSpace, NThing } from 'naive-ui'
 import { FilterAltFilled } from '@vicons/material'
 import { useCars } from '../composables/useCars'
 import type { FuelType, TransmissionFull } from '../types/CarInfo.type'
@@ -71,24 +72,23 @@ export default defineComponent({
   setup() {
     const active = ref(false)
     const { query } = useRoute()
-    const { value } = useThemeVars()
 
     const { fuelTypeOptions, transmissionOptions, yearOptions, updateCarsGetQuery } = useCars()
 
-    const transmission = ref(query.transmission?.toString()?.toString() ?? '')
-    const fuel = ref(query.fuel?.toString() ?? '')
-    const year = ref(query.year?.toString() ?? '')
+    const transmission = ref((query.transmission as TransmissionFull) ?? null)
+    const fuel = ref((query.fuel_type as FuelType) ?? null)
+    const year = ref(query.year?.toString() ?? null)
 
-    const hasActiveFilters = computed(() => !!transmission.value || !!fuel.value || year.value)
+    const hasActiveFilters = computed(() => !!transmission.value || !!fuel.value || !!year.value)
 
-    const buttonStyles = computed((): Partial<CSSStyleDeclaration> => {
-      if (hasActiveFilters.value) {
-        return {
-          border: `1px ${value.actionColor} solid`
-        }
-      }
+    const activeFiltersCount = computed(() => {
+      let filters: Array<boolean> = []
 
-      return {}
+      filters.push(!!transmission.value)
+      filters.push(!!fuel.value)
+      filters.push(!!year.value)
+
+      return filters.filter((f) => f).length
     })
 
     function onTransmissionChange(val: TransmissionFull | null) {
@@ -96,7 +96,7 @@ export default defineComponent({
     }
 
     function onFuelChange(val: FuelType | null) {
-      updateCarsGetQuery(val, 'fuel')
+      updateCarsGetQuery(val, 'fuel_type ')
     }
 
     function onYearChange(val: string | null) {
@@ -114,7 +114,8 @@ export default defineComponent({
       transmission,
       fuel,
       year,
-      buttonStyles
+      hasActiveFilters,
+      activeFiltersCount
     }
   }
 })

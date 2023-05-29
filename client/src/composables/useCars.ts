@@ -51,7 +51,7 @@ export function useCars() {
 
     const currentQuery = computed(() => route.query)
 
-    function updateCarsGetQuery(value: string | null, key: 'transmission' | 'fuel' | 'year' | 'make') {
+    function updateCarsGetQuery(value: string | null, key: 'transmission' | 'fuel_type ' | 'year' | 'make') {
         if (value !== null) {
             replace({
                 query: {
