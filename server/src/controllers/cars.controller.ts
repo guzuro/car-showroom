@@ -13,13 +13,17 @@ const httpCLient = new HttpClient({
     }
 })
 
+const limitQuery = {
+    limit: 10
+}
+
 export const randomCars = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const getRequests = [
-            httpCLient.get<Array<CarInfo>>('cars', { make: 'audi', limit: 10 }),
-            httpCLient.get<Array<CarInfo>>('cars', { make: 'kia', limit: 10 }),
-            httpCLient.get<Array<CarInfo>>('cars', { make: 'toyota', limit: 10 }),
-            httpCLient.get<Array<CarInfo>>('cars', { make: 'volkswagen', limit: 10 })
+            httpCLient.get<Array<CarInfo>>('cars', { make: 'audi', ...limitQuery }),
+            httpCLient.get<Array<CarInfo>>('cars', { make: 'kia', ...limitQuery }),
+            httpCLient.get<Array<CarInfo>>('cars', { make: 'toyota', ...limitQuery }),
+            httpCLient.get<Array<CarInfo>>('cars', { make: 'volkswagen', ...limitQuery }),
         ]
 
         const cars = await
@@ -46,9 +50,13 @@ export const randomCars = async (req: Request, res: Response, next: NextFunction
     }
 }
 
-export const carsByModel = async (req: Request, res: Response, next: NextFunction) => {
+export const getCars = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { data } = await httpCLient.get<Array<CarInfo>>('cars', req.query)
+
+        const { data } = await httpCLient.get<Array<CarInfo>>('cars', {
+            ...limitQuery,
+            ...req.query,
+        })
         const indexedCars = data.map(setLoopIndex)
 
         res
