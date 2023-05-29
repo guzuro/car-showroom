@@ -35,13 +35,39 @@
         />
       </div>
     </template>
+    <ul class="cars-list-item__list list">
+      <li class="list__item">
+        <n-icon :size="20">
+          <CalendarMonthFilled />
+        </n-icon>
+        {{ car.year }}
+      </li>
+      <li class="list__item">
+        <n-icon :size="20">
+          <LocalGasStationFilled />
+        </n-icon>
+        {{ car.fuel_type }}
+      </li>
+      <li class="list__item">
+        <n-icon :size="20">
+          <MiscellaneousServicesOutlined />
+        </n-icon>
+        {{ transmissionAlias }}
+      </li>
+    </ul>
   </n-card>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, type PropType } from 'vue'
 import { NCard } from 'naive-ui'
-import { BookmarkFilled, DeleteFilled } from '@vicons/material'
+import {
+  BookmarkFilled,
+  DeleteFilled,
+  CalendarMonthFilled,
+  LocalGasStationFilled,
+  MiscellaneousServicesOutlined
+} from '@vicons/material'
 import { NIcon } from 'naive-ui'
 import { useThemeVars } from 'naive-ui'
 import type { CarInfo } from '../../types/CarInfo.type'
@@ -52,7 +78,10 @@ export default defineComponent({
     NCard,
     BookmarkFilled,
     DeleteFilled,
-    NIcon
+    NIcon,
+    CalendarMonthFilled,
+    LocalGasStationFilled,
+    MiscellaneousServicesOutlined
   },
   props: {
     car: {
@@ -88,6 +117,16 @@ export default defineComponent({
       emit('deleteClick')
     }
 
+    const transmissionAlias = computed(() => {
+      if (props.car.transmission === 'a') {
+        return 'auto'
+      } else if (props.car.transmission === 'm') {
+        return 'manual'
+      } else {
+        return ''
+      }
+    })
+
     return {
       warningColor,
       errorColor,
@@ -96,7 +135,8 @@ export default defineComponent({
       onBookmarkClick,
       onDeleteClick,
       isCarInList,
-      bookmarkHoverClass
+      bookmarkHoverClass,
+      transmissionAlias
     }
   }
 })
@@ -125,6 +165,14 @@ export default defineComponent({
       &:hover svg {
         color: v-bind(errorColorHover) !important;
       }
+    }
+  }
+
+  .list {
+    &__item {
+      display: flex;
+      justify-content: space-between;
+      text-transform: capitalize;
     }
   }
 
