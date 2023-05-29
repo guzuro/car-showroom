@@ -33,6 +33,7 @@ import { CarModel, type ModelItem, type ModelsList } from './types'
 import { NIcon, useThemeVars } from 'naive-ui'
 import { StarFilled, SwipeFilled } from '@vicons/material'
 import { useElementScrollable } from '../../composables/useElementScrollable'
+import { useRoute } from 'vue-router'
 
 const list: ModelsList = [
   {
@@ -62,7 +63,9 @@ export default defineComponent({
   },
   emits: ['selectModel'],
   setup(_, { emit }) {
-    const selectedModel = ref<CarModel | null>(null)
+    const { query } = useRoute()
+
+    const selectedModel = ref<CarModel | null>((query.make as CarModel) ?? null)
     const theme = useThemeVars()
     const { warningColor } = theme.value
     const scrollableWrapper = ref<HTMLDivElement | null>(null)
