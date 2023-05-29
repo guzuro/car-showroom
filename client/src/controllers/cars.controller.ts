@@ -5,11 +5,11 @@ export default function useCarsController() {
     const { open, close } = useLoader();
 
 
-    async function carsByModel(query: Record<string, any>) {
+    async function getCars(query: Record<string, any>) {
         try {
             open()
 
-            const { data } = await CarsApi.carsByModel(query)
+            const { data } = await CarsApi.getCars(query)
 
             return data
         } finally {
@@ -32,7 +32,7 @@ export default function useCarsController() {
     }
 
     return {
-        carsByModel,
+        getCars,
         randomCars
     }
 }

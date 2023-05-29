@@ -20,7 +20,6 @@ export const enum FuelType {
     Gas = 'gas',
     Diesel = 'diesel',
     Electricity = 'electricity',
-
 }
 
 export const enum DriveType {
@@ -31,5 +30,9 @@ export const enum DriveType {
 }
 
 export type Transmission = 'm' | 'a'
+export const enum TransmissionFull {
+    Manual = 'manual',
+    Auto = 'auto'
+}
 
 export type Cylinders = 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12 | 16
