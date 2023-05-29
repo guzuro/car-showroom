@@ -129,7 +129,7 @@ export default defineComponent({
 .users-wishlists {
   &__add-btn {
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
 }
 </style>

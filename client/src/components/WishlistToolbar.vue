@@ -86,6 +86,8 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .wishlist-toolbar {
+  margin-bottom: 15px;
+
   &__title {
     display: flex;
     align-items: center;

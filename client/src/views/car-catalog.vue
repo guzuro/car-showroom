@@ -61,7 +61,7 @@ export default defineComponent({
 <style scoped lang="scss">
 .car-catalog {
   &__cars {
-    margin-top: 60px;
+    margin-top: 30px;
   }
 }
 </style>

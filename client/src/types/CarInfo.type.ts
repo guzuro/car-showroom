@@ -30,9 +30,6 @@ export const enum DriveType {
     FullWd = '4wd',
 }
 
-export const enum Transmission {
-    Manual = 'm',
-    Automatic = 'a'
-}
+export type Transmission = 'm' | 'a'
 
 export type Cylinders = 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12 | 16
