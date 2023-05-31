@@ -1,5 +1,8 @@
 <template>
-  <n-layout class="main-layout" :content-style="mainLayoutContentStyles">
+  <n-layout
+    class="main-layout"
+    :content-style="mainLayoutContentStyles"
+  >
     <n-layout-header>
       <layout-header></layout-header>
     </n-layout-header>

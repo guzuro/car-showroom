@@ -1,6 +1,9 @@
 <template>
   <div class="layout-user-header">
-    <div class="layout-user-header__user" v-if="user">
+    <div
+      class="layout-user-header__user"
+      v-if="user"
+    >
       <template v-if="screen.m">
         {{ userFullName }}
       </template>
@@ -8,7 +11,11 @@
         <person-filled />
       </n-icon>
     </div>
-    <div v-else class="layout-user-header__auth" @click="authModalOpen = true">
+    <div
+      v-else
+      class="layout-user-header__auth"
+      @click="authModalOpen = true"
+    >
       <template v-if="screen.m"> Sign in </template>
       <n-icon :size="30">
         <log-in-filled />

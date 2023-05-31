@@ -1,15 +1,29 @@
 <template>
   <div class="sign-in auth-form">
     <n-spin :show="authInLoading">
-      <n-form ref="formRef" :model="signInData" :rules="rules">
-        <n-form-item label="Login" path="login">
-          <n-input v-model:value="signInData.login" class="card__login" placeholder="Login...">
+      <n-form
+        ref="formRef"
+        :model="signInData"
+        :rules="rules"
+      >
+        <n-form-item
+          label="Login"
+          path="login"
+        >
+          <n-input
+            v-model:value="signInData.login"
+            class="card__login"
+            placeholder="Login..."
+          >
             <template #prefix>
               <n-icon :component="PersonFilled" />
             </template>
           </n-input>
         </n-form-item>
-        <n-form-item label="Password" path="password">
+        <n-form-item
+          label="Password"
+          path="password"
+        >
           <n-input
             v-model:value="signInData.password"
             class="card__password"
@@ -42,7 +56,12 @@
       <div class="auth-form__footer">
         <span> Don't have an account? </span>
         &nbsp;
-        <a class="auth-form__change-form" @click="emit('signUpClick')"> Sign Up </a>
+        <a
+          class="auth-form__change-form"
+          @click="emit('signUpClick')"
+        >
+          Sign Up
+        </a>
       </div>
     </n-spin>
   </div>

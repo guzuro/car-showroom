@@ -19,10 +19,18 @@
       <template #extra>
         <n-space>
           <n-button @click="toggleDefault"> {{ defaultToggleButtonTitle }} </n-button>
-          <n-button v-if="!list.shareKey" type="success" @click="generateShareLink">
+          <n-button
+            v-if="!list.shareKey"
+            type="success"
+            @click="generateShareLink"
+          >
             Generate link
           </n-button>
-          <n-button type="error" @click="removeListHandler(list.id)">Remove list</n-button>
+          <n-button
+            type="error"
+            @click="removeListHandler(list.id)"
+            >Remove list</n-button
+          >
         </n-space>
       </template>
     </n-page-header>

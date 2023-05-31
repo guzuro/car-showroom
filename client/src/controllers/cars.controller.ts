@@ -1,38 +1,35 @@
-import { useLoader } from '../composables/useLoader';
-import CarsApi from '../Api/cars.api';
+import { useLoader } from '../composables/useLoader'
+import CarsApi from '../Api/cars.api'
 
 export default function useCarsController() {
-    const { open, close } = useLoader();
+  const { open, close } = useLoader()
 
+  async function getCars(query: Record<string, any>) {
+    try {
+      open()
 
-    async function getCars(query: Record<string, any>) {
-        try {
-            open()
+      const { data } = await CarsApi.getCars(query)
 
-            const { data } = await CarsApi.getCars(query)
-
-            return data
-        } finally {
-            close()
-        }
-
+      return data
+    } finally {
+      close()
     }
+  }
 
-    async function randomCars() {
-        try {
-            open()
+  async function randomCars() {
+    try {
+      open()
 
-            const { data } = await CarsApi.randomCars()
+      const { data } = await CarsApi.randomCars()
 
-            return data
-        } finally {
-            close()
-        }
-
+      return data
+    } finally {
+      close()
     }
+  }
 
-    return {
-        getCars,
-        randomCars
-    }
+  return {
+    getCars,
+    randomCars
+  }
 }

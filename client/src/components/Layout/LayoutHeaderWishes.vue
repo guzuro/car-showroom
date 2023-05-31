@@ -1,5 +1,9 @@
 <template>
-  <div class="layout-header-wishes" v-if="wishes.length" @click="push({ name: 'UsersWishes' })">
+  <div
+    class="layout-header-wishes"
+    v-if="wishes.length"
+    @click="push({ name: 'UsersWishes' })"
+  >
     <n-badge :value="wishes.length">
       <n-icon :size="30">
         <format-list-bulleted-filled />

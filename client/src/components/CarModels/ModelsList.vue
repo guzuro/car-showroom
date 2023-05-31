@@ -1,6 +1,9 @@
 <template>
   <div class="models-list-wrapper">
-    <ul class="models-list" ref="scrollableWrapper">
+    <ul
+      class="models-list"
+      ref="scrollableWrapper"
+    >
       <li
         v-for="li in list"
         :key="li.value"
@@ -11,12 +14,20 @@
           :class="{ 'models-list__item-active': selectedModel === li.value }"
           :model="li"
         />
-        <n-icon size="32" class="models-list__icon" v-if="selectedModel === li.value">
+        <n-icon
+          size="32"
+          class="models-list__icon"
+          v-if="selectedModel === li.value"
+        >
           <star-filled />
         </n-icon>
       </li>
     </ul>
-    <n-icon v-if="isWrapperScrollable" class="models-list-wrapper__swipe" size="32">
+    <n-icon
+      v-if="isWrapperScrollable"
+      class="models-list-wrapper__swipe"
+      size="32"
+    >
       <swipe-filled />
     </n-icon>
   </div>

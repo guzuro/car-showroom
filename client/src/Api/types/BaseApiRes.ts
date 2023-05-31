@@ -1,9 +1,5 @@
 type ResponseMessage = {
-    message: string
+  message: string
 }
 
-export type BaseApiRes<T = undefined> =
-    (T extends undefined
-        ? {}
-        : T)
-    & ResponseMessage
+export type BaseApiRes<T = undefined> = (T extends undefined ? {} : T) & ResponseMessage

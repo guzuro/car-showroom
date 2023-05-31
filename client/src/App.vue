@@ -13,11 +13,10 @@ import AppConfig from '@/components/AppConfig.vue'
 export default defineComponent({
   components: {
     RouterView,
-    AppConfig,
+    AppConfig
   },
   setup() {
-    const { loading } = useLoader();
-
+    const { loading } = useLoader()
 
     return {
       loading

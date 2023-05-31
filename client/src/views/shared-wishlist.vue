@@ -12,8 +12,17 @@
       <template v-else>
         <p>Here is what {{ sharedList.userInfo.email }} realy liked!</p>
         <p>He called it "{{ sharedList.wishlist.name }}"</p>
-        <n-grid class="cars-list" :x-gap="12" :y-gap="12" cols="1 s:2 m:3 l:4" responsive="screen">
-          <n-grid-item v-for="(car, index) in sharedList.wishlist.items" :key="index">
+        <n-grid
+          class="cars-list"
+          :x-gap="12"
+          :y-gap="12"
+          cols="1 s:2 m:3 l:4"
+          responsive="screen"
+        >
+          <n-grid-item
+            v-for="(car, index) in sharedList.wishlist.items"
+            :key="index"
+          >
             <cars-list-item :car="car.carInfo" />
           </n-grid-item>
         </n-grid>

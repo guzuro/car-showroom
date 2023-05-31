@@ -1,28 +1,25 @@
-import type { User } from "./User.types"
-import type { Wish } from "./Wish.type"
+import type { User } from './User.types'
+import type { Wish } from './Wish.type'
 
 export type Wishlist = {
-    id: number,
-    name: string
-    isDefault: boolean
-    shareKey: string | null
-    items: Array<Wish>
-    createdAt: string,
-    updatedAt: string
+  id: number
+  name: string
+  isDefault: boolean
+  shareKey: string | null
+  items: Array<Wish>
+  createdAt: string
+  updatedAt: string
 }
 
-
 export type WishlistApiRes = {
-    wishlist: Wishlist
+  wishlist: Wishlist
 }
 
 export type WishlistsApiRes = {
-    wishlists: Array<Wishlist>
+  wishlists: Array<Wishlist>
 }
 
-
-
 export type SharedWishlistRes = {
-    userInfo: User,
-    wishlist: Wishlist
+  userInfo: User
+  wishlist: Wishlist
 }

@@ -12,7 +12,12 @@
       placeholder="List name..."
     />
     <div class="wishlist-create-modal__button-add">
-      <n-button type="success" @click="addNewList"> Create </n-button>
+      <n-button
+        type="success"
+        @click="addNewList"
+      >
+        Create
+      </n-button>
     </div>
   </n-modal>
 </template>

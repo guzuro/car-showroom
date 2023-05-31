@@ -4,7 +4,10 @@
 
     <car-list-filters />
 
-    <cars-list class="car-catalog__cars" :cars="cars" />
+    <cars-list
+      class="car-catalog__cars"
+      :cars="cars"
+    />
   </div>
 </template>
 

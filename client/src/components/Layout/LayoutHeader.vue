@@ -1,8 +1,14 @@
 <template>
   <div class="layout-header-wrapper">
     <div class="layout-header">
-      <div class="layout-header__app-name" @click="gotoMainPage">
-        <img class="layout-header__logo" :src="logo" />
+      <div
+        class="layout-header__app-name"
+        @click="gotoMainPage"
+      >
+        <img
+          class="layout-header__logo"
+          :src="logo"
+        />
         <div class="layout-header__title header-title">
           <span class="header-title__top"> Car </span>
           <span class="header-title__bottom"> Stories </span>

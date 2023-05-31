@@ -1,5 +1,9 @@
 <template>
-  <n-list class="wish-list-names" hoverable clickable>
+  <n-list
+    class="wish-list-names"
+    hoverable
+    clickable
+  >
     <template v-if="sortedWishes.length">
       <n-list-item
         v-for="list in sortedWishes"
@@ -11,12 +15,18 @@
         <n-thing :title="list.name">
           <template #header-extra>
             <template v-if="list.isDefault">
-              <n-icon :color="errorColor" :size="30">
+              <n-icon
+                :color="errorColor"
+                :size="30"
+              >
                 <star-filled />
               </n-icon>
             </template>
             <template v-if="list.shareKey">
-              <n-icon :color="primaryColor" :size="30">
+              <n-icon
+                :color="primaryColor"
+                :size="30"
+              >
                 <link-filled />
               </n-icon>
             </template>

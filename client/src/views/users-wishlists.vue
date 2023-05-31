@@ -2,7 +2,12 @@
   <div class="users-wishlists">
     <wishlist-create-modal v-model="wishlistCreateModalOpen" />
 
-    <n-grid :x-gap="12" :y-gap="12" item-responsive responsive="screen">
+    <n-grid
+      :x-gap="12"
+      :y-gap="12"
+      item-responsive
+      responsive="screen"
+    >
       <n-grid-item span="24 s:7">
         <n-button
           type="primary"
@@ -16,7 +21,10 @@
           </template>
           Add new
         </n-button>
-        <wish-list-names v-if="screen.s" @on-list-select="activeListId = $event" />
+        <wish-list-names
+          v-if="screen.s"
+          @on-list-select="activeListId = $event"
+        />
 
         <n-dropdown
           v-if="!screen.s"
@@ -47,7 +55,10 @@
             cols="1 s:2 m:3 l:4"
             responsive="screen"
           >
-            <n-grid-item v-for="item in activeWishlist.items" :key="item.id">
+            <n-grid-item
+              v-for="item in activeWishlist.items"
+              :key="item.id"
+            >
               <cars-list-item
                 delete-icon
                 :car="item.carInfo"
@@ -55,9 +66,15 @@
               />
             </n-grid-item>
           </n-grid>
-          <n-empty v-else description="List is empty" />
+          <n-empty
+            v-else
+            description="List is empty"
+          />
         </template>
-        <n-empty v-else description="List is not selected" />
+        <n-empty
+          v-else
+          description="List is not selected"
+        />
       </n-grid-item>
     </n-grid>
   </div>

@@ -1,6 +1,10 @@
 <template>
   <div class="carlist-filters">
-    <n-button type="primary" :dashed="hasActiveFilters" @click="active = true">
+    <n-button
+      type="primary"
+      :dashed="hasActiveFilters"
+      @click="active = true"
+    >
       <template #icon>
         <n-icon>
           <FilterAltFilled />
@@ -18,9 +22,15 @@
         height: '100vh'
       }"
     >
-      <n-drawer-content closable title="Filters">
+      <n-drawer-content
+        closable
+        title="Filters"
+      >
         <n-space vertical>
-          <n-thing title="Transmission" content-indented>
+          <n-thing
+            title="Transmission"
+            content-indented
+          >
             <n-select
               v-model:value="transmission"
               clearable
@@ -28,7 +38,10 @@
               @change="onTransmissionChange"
             />
           </n-thing>
-          <n-thing title="Fuel type" content-indented>
+          <n-thing
+            title="Fuel type"
+            content-indented
+          >
             <n-select
               clearable
               v-model:value="fuel"
@@ -36,7 +49,10 @@
               @change="onFuelChange"
             />
           </n-thing>
-          <n-thing title="Year" content-indented>
+          <n-thing
+            title="Year"
+            content-indented
+          >
             <n-select
               clearable
               v-model:value="year"

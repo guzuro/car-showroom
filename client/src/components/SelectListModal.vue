@@ -6,7 +6,10 @@
     class="wishlist-create-modal"
     v-model:show="selectListModalOpen"
   >
-    <n-select :options="wishlistSelectOptions" @update:value="handleUpdateValue" />
+    <n-select
+      :options="wishlistSelectOptions"
+      @update:value="handleUpdateValue"
+    />
   </n-modal>
 </template>
 

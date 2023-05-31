@@ -1,8 +1,21 @@
 <template>
   <div class="cars-list-wrapper">
-    <n-grid class="cars-list" :x-gap="12" :y-gap="12" cols="1 s:2 m:3 l:4" responsive="screen">
-      <n-grid-item v-for="(car, index) in cars" :key="index">
-        <cars-list-item bookmark-icon :car="car" @bookmark-click="addToWishlist" />
+    <n-grid
+      class="cars-list"
+      :x-gap="12"
+      :y-gap="12"
+      cols="1 s:2 m:3 l:4"
+      responsive="screen"
+    >
+      <n-grid-item
+        v-for="(car, index) in cars"
+        :key="index"
+      >
+        <cars-list-item
+          bookmark-icon
+          :car="car"
+          @bookmark-click="addToWishlist"
+        />
       </n-grid-item>
     </n-grid>
 
