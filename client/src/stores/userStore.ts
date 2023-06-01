@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import type { User } from '../types/User.types'
 
 export const useUserStore = defineStore('user', () => {
-  const user = ref<User | null>(null)
+  const user = ref<Omit<User, 'wishes'> | null>(null)
 
   const userFullName = computed(() => {
     if (user.value) {
@@ -17,7 +17,7 @@ export const useUserStore = defineStore('user', () => {
     }
   })
 
-  function saveUser(payload: User) {
+  function saveUser(payload: Omit<User, 'wishes'>) {
     user.value = payload
   }
 
