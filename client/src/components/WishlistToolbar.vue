@@ -8,7 +8,7 @@
             class="wishlist-toolbar__link"
             :color="primaryColor"
             :size="30"
-            @click="prepareShareLink(list.shareKey)"
+            @click="prepareShareLink(list.shareKey!)"
           >
             <link-filled />
           </n-icon>
