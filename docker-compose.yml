@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  client:
+    image: app/frontend
+    build: ./client
+    ports:
+      - "8080:8080"
+    depends_on:
+      - server
+
+  server:
+    image: app/server
+    build: ./server
+    ports:
+    - "3131:3131"
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    restart: always
+    ports:
+      - "5432:5432"
