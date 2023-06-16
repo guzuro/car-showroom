@@ -21,3 +21,11 @@
 **Backend:**
  - [x] NodeJS, Express
  - [x] Postgres, TypeORM
+ - [x] Docker
+
+ ## Run application
+
+ Via Docker
+```bash
+  docker-compose up
+```
