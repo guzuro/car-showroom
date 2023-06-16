@@ -1,11 +1,9 @@
 import { Not } from "typeorm";
 import { AppDataSource } from "../config/data-source";
 import { CreateWishlistDto } from "../dto/Wishlist/create-wishlist.dto";
-import { DeleteWishlistDto } from "../dto/Wishlist/delete-wishlist.dto";
 import { GetUserWishlists } from "../dto/Wishlist/get-user-wishlists.dto";
-import { GetWishListById } from "../dto/Wishlist/get-wishlist-by-id.dto";
 import { GetWishListByShareKeyDto } from "../dto/Wishlist/get-wishlist-by-sharekey.dto.";
-import { UpdateListDefaultDto } from "../dto/Wishlist/update-list-default.dto.";
+import { WishListIdDto } from "../dto/Wishlist/wishlist-id.dto";
 import { WishList } from "../entities/wishlist.entity";
 
 const wishlistRepository = AppDataSource.getRepository(WishList);
@@ -14,11 +12,11 @@ export const createWishlist = async (newList: CreateWishlistDto) => {
     return await wishlistRepository.save({ ...newList })
 }
 
-export const deleteWishlist = async (id: DeleteWishlistDto) => {
+export const deleteWishlist = async (id: WishListIdDto) => {
     return await wishlistRepository.delete(id)
 }
 
-export const getWishlistById = async ({ id }: GetWishListById) => {
+export const getWishlistById = async ({ id }: WishListIdDto) => {
     return await wishlistRepository.findOne({
         where: {
             id
@@ -55,7 +53,7 @@ export const getUserWishlists = async ({ userId }: GetUserWishlists) => {
     })
 }
 
-export const setWishlistAsDefault = async ({ id }: UpdateListDefaultDto) => {
+export const setWishlistAsDefault = async ({ id }: WishListIdDto) => {
 
     return wishlistRepository.manager.transaction(async (manager) => {
         const list = await manager.findOneBy(WishList, { id })

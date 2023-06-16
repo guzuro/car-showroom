@@ -1,3 +1,3 @@
 import { WishList } from "../../entities/wishlist.entity";
 
-export type GetWishListById = Pick<WishList, "id">
+export type WishListIdDto = Pick<WishList, "id">
