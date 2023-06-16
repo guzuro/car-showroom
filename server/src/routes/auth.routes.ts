@@ -11,7 +11,4 @@ router.post('/register', validation(createUserSchema), registerUserHandler)
 
 router.post('/login', validation(loginUserSchema), loginUserHandler)
 
-router.post('/refresh')
-
-
 export default router
