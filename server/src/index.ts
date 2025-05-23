@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { AppDataSource } from './config/data-source';
 import authRouter from './routes/auth.routes';
 import carsRouter from './routes/cars.routes';
-import wishlistRouter from './routes/wishlist.routes';
+import wishlistRouter from './routes/wishList.routes';
 import wishRouter from './routes/wish.routes';
 import errorMiddleware from './middlewares/errorMiddleware';
 const cors = require('cors');
