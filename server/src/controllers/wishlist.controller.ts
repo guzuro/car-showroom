@@ -43,27 +43,23 @@ export const removeListHandler = async (req: Request, res: Response, next: NextF
 
 export const generateShareKeyHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const list = await getWishlistById({
-            ...req.body
-        })
-
+        let list = await getWishlistById({
+          ...req.body,
+        });
 
         if (list) {
-            list.generateGuid()
+          list.generateGuid();
 
-            const updatedList = await updateWishlist(list)
+          const updatedList = await updateWishlist(list);
+          list = Object.assign(list, updatedList);
 
-            res
-                .status(200)
-                .send({
-                    message: 'Wishlist updated!',
-                    wishlist: updatedList.omitUserId()
-                })
-        } else {
-            next(new HttpException(404, "Wishlist not found!"))
-        }
-
-
+          res.status(200).send({
+            message: "Wishlist updated!",
+            wishlist: list.omitUserId(),
+          });
+                } else {
+                next(new HttpException(404, "Wishlist not found!"))
+            }
     } catch (error: any) {
         next(new TypeOrmException(error))
     }
